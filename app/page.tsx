@@ -146,10 +146,10 @@ export default function Home() {
 
             <div className="mt-[20px] grid grid-cols-4 gap-[12px] max-[650px]:grid-cols-2 max-[650px]:gap-3">
               {[
-                ["/frame 25.svg", "industry expertise"],
-                ["/frame 26.svg", "tailored solutions"],
-                ["/frame 27.svg", "transparent communication"],
-                ["/frame 28.svg", "long-term partnership"],
+                ["/frame-25.svg", "industry expertise"],
+                ["/frame-26.svg", "tailored solutions"],
+                ["/frame-27.svg", "transparent communication"],
+                ["/frame-28.svg", "long-term partnership"],
               ].map(([src, alt]) => (
                 <div key={alt} className="w-full">
                   <Image
