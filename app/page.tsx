@@ -147,7 +147,7 @@ export default function Home() {
             <div className="mt-[20px] grid grid-cols-4 gap-[12px] max-[650px]:grid-cols-2 max-[650px]:gap-3">
               {[
                 ["/Frame-25.svg", "industry expertise"],
-                ["/frame-26.svg", "tailored solutions"],
+                ["/Frame-26.svg", "tailored solutions"],
                 ["/Frame-27.svg", "transparent communication"],
                 ["/Frame-28.svg", "long-term partnership"],
               ].map(([src, alt]) => (
