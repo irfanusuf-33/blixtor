@@ -211,7 +211,7 @@ export default function ServicesPage() {
       <section className="bg-white pb-[70px] px-[30px] max-[650px]:px-[18px] max-[650px]:pb-[46px]">
         <SectionHeading
           className="mb-[40px] max-[650px]:mb-8"
-          headingClassName="text-[22px] max-[650px]:text-lg"
+          headingClassName="text-[34px] max-[650px]:text-lg"
           spanSizeClassName="w-[90px]"
         >
           Trusted Partners
@@ -223,7 +223,7 @@ export default function ServicesPage() {
             alt="Trusted partner logos: Australian Sovereign College, Indigo Polytechnic, RTO Specialist"
             width={700}
             height={140}
-            className="h-auto w-full max-w-[700px] object-contain max-[650px]:max-w-[420px]"
+            className="h-auto w-full max-w-[500px] object-contain max-[650px]:max-w-[420px]"
           />
         </div>
       </section>
