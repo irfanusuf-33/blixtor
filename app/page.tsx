@@ -20,15 +20,22 @@ export default function Home() {
 
       {/* ===== Hero ===== */}
       <section
-        className={`relative overflow-hidden min-h-[620px] px-[30px] pb-[42px] grid grid-cols-[minmax(0,552px)_minmax(0,1fr)] items-center gap-[34px]
-          bg-[radial-gradient(ellipse_45%_55%_at_53%_110%,#ae79f5_0%,#b98bfa_30%,transparent_75%),linear-gradient(106deg,#e9e3ff_0%,#e7ddff_60%,#e6dcff_100%)]
+        className={`relative isolate overflow-visible min-h-[620px] px-[30px] pb-[42px] grid grid-cols-[minmax(0,720px)_minmax(0,1fr)] items-center gap-[34px]
+          bg-[linear-gradient(106deg,#e9e3ff_0%,#e7ddff_60%,#e6dcff_100%)]
           max-[850px]:grid-cols-1 max-[850px]:gap-5 max-[850px]:px-[30px] max-[850px]:py-[60px] max-[850px]:pb-[54px]
           max-[650px]:min-h-0 max-[650px]:px-[18px] max-[650px]:py-[56px] max-[650px]:pb-[44px]`}
         aria-labelledby="hero-title"
       >
+        {/* Glow layer — sized and positioned to bleed past the section's bottom edge */}
+        <div
+          className="pointer-events-none absolute left-[40%] right-[-10%] top-[45%] bottom-[-80px] -z-10 rounded-[50%]
+            bg-[radial-gradient(ellipse_at_center,#c9a8f5_0%,#d4bafa_35%,transparent_72%)]"
+          aria-hidden="true"
+        />
+
         <div className="relative z-[1] w-full max-[850px]:text-center">
           <p
-            className={`w-full max-w-[552px] mb-[24px] text-[#5b2df2] [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-light italic leading-[1.4]
+            className={`w-full max-w-[820px] mb-[24px] text-[#5b2df2] [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-light italic leading-[1.5]
               max-[850px]:mx-auto
               max-[650px]:text-[clamp(30px,9vw,45px)]`}
             id="hero-title"
@@ -53,7 +60,7 @@ export default function Home() {
           </p>
 
           <p
-            className={`w-full max-w-[700px] m-0 text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[18px] font-medium leading-[1.8]
+            className={`w-full max-w-[820px] m-0 text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[18px] font-medium leading-[1.6]
               max-[850px]:mx-auto
               max-[650px]:text-[16px] max-[650px]:leading-[1.55]`}
           >
@@ -64,21 +71,21 @@ export default function Home() {
 
           <div className="flex flex-wrap gap-4 mt-8 max-[850px]:justify-center max-[650px]:gap-[10px] max-[650px]:mt-[25px]">
             <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-10 rounded-[11px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-base px-[10px] font-normal transition-[transform,box-shadow] duration-200
+              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
+                text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
                 hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
                 bg-[#5a2df5] text-white
-                max-[650px]:h-[38px] max-[650px]:text-[13px]`}
+                max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
               href="/contact"
             >
               Get a free Consultation
             </Link>
             <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-10 rounded-[11px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-base px-[10px] font-normal transition-[transform,box-shadow] duration-200
+              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
+                text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
                 hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
                 border border-[#5a2df5] text-[#5a2df5] bg-transparent
-                max-[650px]:h-[38px] max-[650px]:text-[13px]`}
+                max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
               href="/services"
             >
               Explore Services
@@ -202,9 +209,9 @@ export default function Home() {
       </section>
 
       {/* ===== Partner ===== */}
-      <section className="bg-white pt-[90px] pb-[92px] px-[30px] max-[650px]:px-[18px] max-[650px]:py-[54px]">
+      <section className="bg-white pt-[104px] pb-[48px] px-[30px] max-[650px]:px-[18px] max-[650px]:pt-[58px] max-[650px]:pb-[38px]">
         <SectionHeading
-          className="mb-[60px] max-[650px]:mb-10"
+          className="mb-[132px] max-[650px]:mb-10"
           headingClassName="text-[30px] max-[650px]:text-xl"
           spanSizeClassName="w-[96px]"
         >
@@ -221,7 +228,7 @@ export default function Home() {
             />
           </div>
 
-          <div className="about-copy w-[540px] max-w-full pt-[6px] max-[1100px]:w-full">
+          <div className="about-copy w-[620px] max-w-full pt-0 -mt-[8px] max-[1100px]:w-full">
             <p className="mb-0 text-[16px] font-medium leading-[1.55] text-[#17171f] max-[950px]:text-[14px] max-[950px]:leading-[1.6]">
               At{" "}
               <strong className="font-semibold text-[#5a2df5]">Blixtor</strong>,{" "}
@@ -229,28 +236,22 @@ export default function Home() {
               sales and marketing strategies. By combining creativity, market
               insights, and data-driven solutions, we enable brands to increase
               visibility, attract the right customers, and drive sustainable
-              growth.
-            </p>
-            <p className="mb-0 text-[16px] font-medium leading-[1.55] text-[#17171f] max-[950px]:text-[14px] max-[950px]:leading-[1.6]">
-              Whether you&apos;re launching a new business, expanding into new
-              markets, or looking to improve your sales performance, our team
-              delivers tailored strategies that align with your goals. From
-              branding and digital marketing to lead generation and sales
+              growth. Whether you&apos;re launching a new business, expanding
+              into new markets, or looking to improve your sales performance,
+              our team delivers tailored strategies that align with your goals.
+              From branding and digital marketing to lead generation and sales
               optimization, we focus on creating measurable results that help
-              your business grow with confidence.
-            </p>
-            <p className="mb-0 text-[16px] font-medium leading-[1.55] text-[#17171f] max-[950px]:text-[14px] max-[950px]:leading-[1.6]">
-              We believe every business is unique, which is why we take a
-              personalized approach to every project. Our commitment is to build
-              long-term partnerships, deliver exceptional value, and empower
-              businesses to achieve lasting success.
+              your business grow with confidence. We believe every business is
+              unique, which is why we take a personalized approach to every
+              project. Our commitment is to build long-term partnerships,
+              deliver exceptional value, and empower businesses to achieve
+              lasting success.
             </p>
           </div>
         </div>
       </section>
 
       {/* ===== CTA ===== */}
-
       <section
         style={{
           backgroundImage: "url('/Group 6.svg')",
@@ -264,7 +265,7 @@ export default function Home() {
       >
         <div className="relative z-[1] mx-auto flex h-full max-w-[758px] flex-col items-center justify-start pt-[70px] max-[650px]:pt-0">
           <SectionHeading
-            className="mb-[15px] max-[650px]:mb-3"
+            className="mb-[22px] max-[650px]:mb-3"
             headingClassName="text-white text-[26px] max-[650px]:text-[18px]"
             spanSizeClassName="w-[109px] max-[650px]:w-[54px]"
             leftBgClassName="bg-[linear-gradient(90deg,transparent_0%,#7b49ff_24%,#ffffff_100%)]"
@@ -273,7 +274,7 @@ export default function Home() {
             Embark on Your Adventure
           </SectionHeading>
 
-          <h2 className="m-0 mb-[10px] max-w-[695px] text-[36px] font-bold leading-[1.15] max-[650px]:text-[24px]">
+          <h2 className="m-0 mb-[10px] max-w-[780px] text-[28px] font-bold leading-[1.15] max-[650px]:text-[24px]">
             Ready to Strengthen Your Organisation?
           </h2>
 

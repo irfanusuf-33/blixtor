@@ -21,7 +21,7 @@ export default function ServicesPage() {
       >
         <div className="relative z-[1]">
           <p
-            className={`w-[552px] max-w-full mb-[22px] text-[#5b2df2] [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-light italic leading-[1.4]
+            className={`w-[552px] max-w-full mb-[22px] text-[#5b2df2] [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-light italic leading-[1.6]
             max-[650px]:w-auto max-[650px]:min-h-0 max-[650px]:text-[clamp(34px,10vw,45px)]`}
             id="services-title"
           >
@@ -32,15 +32,15 @@ export default function ServicesPage() {
               <strong className="text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-semibold not-italic">
                 Sales &{" "}
               </strong>
-              <em className="not-italic font-semibold">Marketing</em>
+              <em className="italic font-semibold">Marketing</em>
             </span>
             <span className="block">
-              <em className="not-italic font-semibold">Services</em>
+              <em className="italic font-semibold">Services</em>
             </span>
           </p>
 
           <p
-            className={`w-[658px] max-w-full min-h-0 m-0 text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[20px] font-medium leading-[1.7]
+            className={`w-[658px] max-w-full min-h-0 m-0 text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[18px] font-medium leading-[1.7]
               max-[650px]:w-auto max-[650px]:min-h-0 max-[650px]:text-base max-[650px]:leading-[1.25]`}
           >
             Explore our range of tailored sales and marketing services, designed
@@ -50,21 +50,21 @@ export default function ServicesPage() {
 
           <div className="flex gap-4 mt-8 max-[650px]:gap-[10px] max-[650px]:mt-[25px]">
             <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-[48px] rounded-[11px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-base px-[18px] font-normal transition-[transform,box-shadow] duration-200
-                hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
-                bg-[#5a2df5] text-white
-                max-[650px]:h-[42px] max-[650px]:px-[14px] max-[650px]:text-[13px]`}
+              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
+              text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
+              hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
+              bg-[#5a2df5] text-white
+              max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
               href="/contact"
             >
-              Request a Free Qoute
+              Request a Free Quote
             </Link>
             <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-[48px] rounded-[11px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-base px-[18px] font-normal transition-[transform,box-shadow] duration-200
-                hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
-                border border-[#5a2df5] text-[#5a2df5] bg-transparent
-                max-[650px]:h-[42px] max-[650px]:px-[14px] max-[650px]:text-[13px]`}
+              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
+              text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
+              hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
+              border border-[#5a2df5] text-[#5a2df5] bg-transparent
+              max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
               href="/"
             >
               Contact Our Team
@@ -99,20 +99,20 @@ export default function ServicesPage() {
         <div className="max-w-[1300px] mx-auto flex flex-col gap-[64px] max-[650px]:gap-10">
           {/* Row 1 — image left, text right */}
           <div className="flex items-stretch gap-[60px] max-[850px]:flex-col max-[850px]:gap-6">
-            <div
-              className="flex-1 min-h-[300px] rounded-lg overflow-hidden"
-              style={{
-                backgroundImage: "url('/businessdevelopment.svg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
+            <div className="relative flex-1 min-h-[300px] overflow-hidden rounded-lg">
+              <Image
+                src="/businessdevelopment.svg"
+                alt="Business development service illustration"
+                fill
+                className="object-contain object-center"
+                sizes="(max-width: 850px) 100vw, 50vw"
+              />
+            </div>
             <div className="flex-1">
-              <h3 className="text-[38px] font-bold mb-3 text-black">
+              <h3 className="text-[36px] font-bold mb-3 text-black">
                 <span className="text-[#5a2df5]">Business</span> Development
               </h3>
-              <p className="text-[20px] leading-[1.5] text-[#3B2A6B]">
+              <p className="text-[18px] leading-[1.5] text-[#3B2A6B]">
                 Unlock new opportunities and accelerate your business growth
                 with <span className="text-[#5a2df5]">Blixtor's</span> Business
                 Development Services. We help business identify growth
@@ -137,11 +137,11 @@ export default function ServicesPage() {
           {/* Row 2 — text left, image right */}
           <div className="flex items-stretch gap-[60px] max-[850px]:flex-col max-[850px]:gap-6">
             <div className="flex-1 max-[850px]:order-2">
-              <h3 className="text-[38px] font-bold mb-3 text-black">
+              <h3 className="text-[36px] font-bold mb-3 text-black">
                 <span className="text-[#5a2df5]">Marketing </span> Products
                 &amp; Services
               </h3>
-              <p className="text-[20px] leading-[1.5] text-[#3B2A6B]">
+              <p className="text-[18px] leading-[1.5] text-[#3B2A6B]">
                 At <span className="text-[#5a2df5]">Blixtor</span>, we help
                 businesses effectively market their products and services
                 through strategic, results-driven solutions. Our team develops
@@ -158,34 +158,34 @@ export default function ServicesPage() {
                 success.
               </p>
             </div>
-            <div
-              className="flex-1 min-h-[300px] rounded-lg overflow-hidden max-[850px]:order-1"
-              style={{
-                backgroundImage: "url('/marketing.svg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
+            <div className="relative flex-1 min-h-[300px] overflow-hidden rounded-lg max-[850px]:order-1">
+              <Image
+                src="/marketing.svg"
+                alt="Marketing products and services illustration"
+                fill
+                className="object-contain object-center"
+                sizes="(max-width: 850px) 100vw, 50vw"
+              />
+            </div>
           </div>
 
           {/* Row 3 — image left, text right */}
           <div className="flex items-stretch gap-[60px] max-[850px]:flex-col max-[850px]:gap-6">
-            <div
-              className="flex-1 min-h-[300px] rounded-lg overflow-hidden"
-              style={{
-                backgroundImage: "url('/sales.svg')",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
+            <div className="relative flex-1 min-h-[300px] overflow-hidden rounded-lg">
+              <Image
+                src="/sales.svg"
+                alt="Sales and growth illustration"
+                fill
+                className="object-contain object-center"
+                sizes="(max-width: 850px) 100vw, 50vw"
+              />
+            </div>
             <div className="flex-1">
-              <h3 className="text-[38px] font-bold mb-3 text-black">
+              <h3 className="text-[36px] font-bold mb-3 text-black">
                 <span className="text-[#5a2df5]">Sales &amp; Growth</span> of
                 Products and Services
               </h3>
-              <p className="text-[20px] leading-[1.5] text-[#3B2A6B]">
+              <p className="text-[18px] leading-[1.5] text-[#3B2A6B]">
                 Drive higher sales and sustainable business growth with{" "}
                 <span className="text-[#5a2df5]">Blixtor's</span> strategic
                 sales and growth solutions. We help businesses increase the
@@ -242,7 +242,7 @@ export default function ServicesPage() {
       >
         <div className="relative z-[1] mx-auto flex h-full max-w-[758px] flex-col items-center justify-start pt-[70px] max-[650px]:pt-0">
           <SectionHeading
-            className="mb-[15px] max-[650px]:mb-3"
+            className="mb-[22px] max-[650px]:mb-3"
             headingClassName="text-white text-[26px] max-[650px]:text-[18px]"
             spanSizeClassName="w-[109px] max-[650px]:w-[54px]"
             leftBgClassName="bg-[linear-gradient(90deg,transparent_0%,#7b49ff_24%,#ffffff_100%)]"
@@ -251,7 +251,7 @@ export default function ServicesPage() {
             Embark on Your Adventure
           </SectionHeading>
 
-          <h2 className="m-0 mb-[10px] max-w-[695px] text-[36px] font-bold leading-[1.15] max-[650px]:text-[24px]">
+          <h2 className="m-0 mb-[10px] max-w-[780px] text-[28px] font-bold leading-[1.15] max-[650px]:text-[24px]">
             Ready to Strengthen Your Organisation?
           </h2>
 

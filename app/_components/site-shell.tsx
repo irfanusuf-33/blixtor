@@ -32,13 +32,13 @@ export function SectionHeading({
 
   return (
     <div
-      className={`flex items-center justify-center gap-[21px] mb-[25px] max-[650px]:gap-3 ${className}`}
+      className={`flex items-center justify-center gap-[21px] max-[650px]:gap-3 ${className}`}
     >
       <span
         className={`hidden sm:block h-[3px] rounded-full ${spanSizeClassName} ${leftBg}`}
       />
       <h2
-        className={`m-0 text-[#15151d] text-[30px] font-bold text-center max-[650px]:text-2xl ${headingClassName}`}
+        className={`m-0 text-[#15151d] text-[30px] font-bold text-center ${headingClassName}`}
       >
         {children}
       </h2>
@@ -51,11 +51,11 @@ export function SectionHeading({
 
 export function SiteHeader({ active }: { active: ActiveRoute }) {
   const navLinkActive =
-    "relative text-black text-xl font-semibold " +
-    "after:content-[''] after:absolute after:left-0 after:-bottom-[5px] after:h-[2px] after:w-[59px] after:bg-black " +
-    "max-[650px]:text-[15px] max-[650px]:after:w-[43px]";
+    "relative text-black text-2xl font-semibold inline-block " +
+    "after:content-[''] after:absolute after:left-0 after:-bottom-[5px] after:h-[2px] after:w-full after:bg-black " +
+    "max-[650px]:text-[17px]";
   const navLinkInactive =
-    "text-[#c5bcbc] text-lg font-normal max-[650px]:text-[15px]";
+    "text-[#c5bcbc] text-xl font-normal max-[650px]:text-[17px]";
 
   return (
     <header className="h-[70px] px-[29px] flex items-center justify-between bg-white max-[650px]:h-16 max-[650px]:px-4">
@@ -75,7 +75,7 @@ export function SiteHeader({ active }: { active: ActiveRoute }) {
       </Link>
 
       <nav
-        className="flex items-center gap-[31px] [font-family:var(--font-poppins),Arial,sans-serif] text-base max-[650px]:gap-[10px] max-[650px]:text-[13px]"
+        className="flex items-center gap-[36px] [font-family:var(--font-poppins),Arial,sans-serif] text-base max-[650px]:gap-[12px] max-[650px]:text-[15px]"
         aria-label="Primary navigation"
       >
         <Link
@@ -91,7 +91,7 @@ export function SiteHeader({ active }: { active: ActiveRoute }) {
           Services
         </Link>
         <Link
-          className="inline-flex items-center justify-center gap-2 px-3 py-[10px] min-w-[130px] h-10 bg-[#5627ed] text-white rounded-[7px] text-sm font-normal whitespace-nowrap max-[650px]:min-w-0 max-[650px]:h-[34px] max-[650px]:px-[10px] max-[650px]:py-[7px] max-[650px]:text-xs"
+          className="inline-flex items-center justify-center gap-2 px-4 py-[12px] min-w-[150px] h-[46px] bg-[#5627ed] text-white rounded-[7px] text-base font-normal whitespace-nowrap max-[650px]:min-w-0 max-[650px]:h-[38px] max-[650px]:px-[12px] max-[650px]:py-[8px] max-[650px]:text-sm"
           href="/contact"
         >
           <span className="text-white">Contact Us</span>
@@ -111,40 +111,160 @@ export function SiteHeader({ active }: { active: ActiveRoute }) {
 
 export function SiteFooter() {
   return (
-    <footer className="relative min-h-[308px] overflow-hidden bg-[linear-gradient(90deg,#4a347f_0%,#44239a_22%,#32108d_54%,#280576_78%,#24006c_100%)] px-[30px] pt-[30px] pb-[11px] text-white max-[650px]:min-h-[240px] max-[650px]:px-[18px] max-[650px]:pt-[22px] max-[650px]:pb-[14px]">
-      <div className="pointer-events-none absolute left-[-36px] top-[10px] h-[286px] w-[1080px] rounded-full bg-[radial-gradient(ellipse_at_18%_44%,rgba(211,194,255,0.5)_0%,rgba(156,126,255,0.34)_20%,rgba(98,57,231,0.18)_38%,rgba(60,22,181,0.08)_54%,rgba(41,8,122,0)_72%)] max-[650px]:left-[-18px] max-[650px]:top-[18px] max-[650px]:h-[170px] max-[650px]:w-[420px]" />
-      <div className="relative flex min-h-[267px] items-start justify-between gap-8 max-[650px]:min-h-[190px] max-[650px]:flex-col max-[650px]:gap-5">
-        <Image
-          src="/Light 1 1 (1).svg"
-          alt="Blixtor"
-          width={717}
-          height={199}
-          className="h-auto w-[717px] max-w-full max-[650px]:w-[320px]"
-          priority
-        />
+    <footer
+      className="
+        relative
+        min-h-[308px]
+        overflow-hidden
+        bg-[linear-gradient(90deg,#4a347f_0%,#44239a_22%,#32108d_54%,#280576_78%,#24006c_100%)]
+        px-[30px]
+        pt-[30px]
+        pb-[11px]
+        text-white
+        max-[650px]:min-h-0
+        max-[650px]:px-[18px]
+        max-[650px]:pt-[22px]
+        max-[650px]:pb-[22px]
+      "
+    >
+      <div
+        className="
+          relative
+          flex
+          min-h-[267px]
+          items-start
+          justify-between
+          gap-8
+          max-[650px]:min-h-0
+          max-[650px]:flex-col
+          max-[650px]:gap-5
+        "
+      >
+        {/* =========================
+            LOGO + GRADIENT
+        ========================== */}
+        <div
+          className="
+            relative
+            flex
+            w-[min(55vw,717px)]
+            items-start
+            justify-start
+            overflow-visible
+            rounded-full
+            bg-[radial-gradient(ellipse_at_center,rgba(211,194,255,0.6)_0%,rgba(211,194,255,0.5)_20%,rgba(156,126,255,0.38)_40%,rgba(98,57,231,0.2)_60%,rgba(60,22,181,0.08)_78%,rgba(41,8,122,0)_92%)]
+            bg-[length:100%_100%]
+            bg-no-repeat
+            max-[650px]:w-[280px]
+          "
+        >
+          <Image
+            src="/Light 1 1 (1).svg"
+            alt="Blixtor"
+            width={717}
+            height={199}
+            className="
+              relative
+              z-10
+              h-auto
+              w-full
+              max-w-full
+            "
+            priority
+          />
+        </div>
 
-        <div className="pt-[30px] text-right max-[650px]:pt-0 max-[650px]:text-left">
-          <p className="mb-4 text-[24px] font-semibold leading-none max-[650px]:mb-3 max-[650px]:text-[18px]">
+        {/* =========================
+            COMPANY LINKS
+        ========================== */}
+        <div
+          className="
+            shrink-0
+            pt-[30px]
+            text-right
+            max-[650px]:pt-0
+            max-[650px]:text-left
+          "
+        >
+          <p
+            className="
+              mb-4
+              text-[24px]
+              font-semibold
+              leading-none
+              text-[#c9b8ff]
+              max-[650px]:mb-3
+              max-[650px]:text-[18px]
+            "
+          >
             Company
           </p>
-          <div className="flex flex-col gap-[10px] text-[20px] leading-[1.5] max-[650px]:gap-2 max-[650px]:text-[15px]">
+
+          <div
+            className="
+              flex
+              flex-col
+              gap-[10px]
+              text-[20px]
+              leading-[1.5]
+              max-[650px]:gap-2
+              max-[650px]:text-[15px]
+            "
+          >
             <Link className="hover:underline" href="/">
               Home
             </Link>
+
             <Link className="hover:underline" href="/services">
               Services
             </Link>
+
             <Link className="hover:underline" href="/contact">
               Contact Us
             </Link>
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 flex items-center gap-[13px] text-white/95 max-[650px]:bottom-[2px]">
-          <span className="flex h-[23px] w-[25px] items-center justify-center rounded-full border border-white/90 text-[13px] leading-none">
+        {/* =========================
+            COPYRIGHT
+        ========================== */}
+        <div
+          className="
+            flex
+            items-center
+            gap-[13px]
+            text-white/95
+            max-[650px]:mt-4
+            sm:absolute
+            sm:bottom-0
+            sm:left-0
+          "
+        >
+          <span
+            className="
+              flex
+              h-[23px]
+              w-[25px]
+              items-center
+              justify-center
+              rounded-full
+              border
+              border-white/90
+              text-[13px]
+              leading-none
+            "
+          >
             C
           </span>
-          <small className="text-[14px] font-normal tracking-[0.01em] max-[650px]:text-[11px]">
+
+          <small
+            className="
+              text-[14px]
+              font-normal
+              tracking-[0.01em]
+              max-[650px]:text-[11px]
+            "
+          >
             2025 Square UI . All Rights Reserved
           </small>
         </div>
