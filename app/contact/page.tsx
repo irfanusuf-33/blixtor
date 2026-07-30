@@ -1,7 +1,83 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { SiteFooter, SiteHeader } from "../_components/site-shell";
 
+type FormFeedback = {
+  type: "success" | "error";
+  message: string;
+};
+
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    email: "",
+    phone: "",
+    message: "",
+    termsAccepted: false,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<FormFeedback | null>(null);
+
+  const isFormComplete =
+    formData.firstName.trim() !== "" &&
+    formData.email.trim() !== "" &&
+    formData.phone.trim() !== "" &&
+    formData.message.trim() !== "" &&
+    formData.termsAccepted;
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!isFormComplete || isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setFeedback(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setFormData({
+          firstName: "",
+          email: "",
+          phone: "",
+          message: "",
+          termsAccepted: false,
+        });
+
+        setFeedback({
+          type: "success",
+          message: result.message,
+        });
+      } else {
+        setFeedback({
+          type: "error",
+          message: result.message,
+        });
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+      setFeedback({
+        type: "error",
+        message: "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-white">
       <SiteHeader active="contact" />
@@ -147,10 +223,11 @@ export default function ContactPage() {
               you with tailored solutions to help you grow.
             </p>
 
-            <form className="flex flex-1 flex-col">
+            <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
               {/* First Name */}
               <div className="mb-[clamp(14px,1.3vw,24px)]">
                 <label
+                  htmlFor="firstName"
                   className="
                     mb-[clamp(6px,0.6vw,10px)]
                     block
@@ -159,11 +236,20 @@ export default function ContactPage() {
                     text-black
                   "
                 >
-                  First Name
+                  First Name <span className="text-[#5a2df5]">*</span>
                 </label>
 
                 <input
+                  id="firstName"
                   type="text"
+                  required
+                  value={formData.firstName}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      firstName: e.target.value,
+                    })
+                  }
                   className="
                     h-[clamp(36px,3vw,52px)]
                     w-full
@@ -183,6 +269,7 @@ export default function ContactPage() {
               {/* Email */}
               <div className="mb-[clamp(14px,1.3vw,24px)]">
                 <label
+                  htmlFor="email"
                   className="
                     mb-[clamp(6px,0.6vw,10px)]
                     block
@@ -191,11 +278,20 @@ export default function ContactPage() {
                     text-black
                   "
                 >
-                  Email
+                  Email <span className="text-[#5a2df5]">*</span>
                 </label>
 
                 <input
+                  id="email"
                   type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      email: e.target.value,
+                    })
+                  }
                   className="
                     h-[clamp(36px,3vw,52px)]
                     w-full
@@ -215,6 +311,7 @@ export default function ContactPage() {
               {/* Phone Number */}
               <div className="mb-[clamp(14px,1.3vw,24px)]">
                 <label
+                  htmlFor="phone"
                   className="
                     mb-[clamp(6px,0.6vw,10px)]
                     block
@@ -223,11 +320,20 @@ export default function ContactPage() {
                     text-black
                   "
                 >
-                  Phone Number
+                  Phone Number <span className="text-[#5a2df5]">*</span>
                 </label>
 
                 <input
+                  id="phone"
                   type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      phone: e.target.value,
+                    })
+                  }
                   className="
                     h-[clamp(36px,3vw,52px)]
                     w-full
@@ -247,6 +353,7 @@ export default function ContactPage() {
               {/* Message */}
               <div className="mb-[clamp(14px,1.3vw,24px)]">
                 <label
+                  htmlFor="message"
                   className="
                     mb-[clamp(6px,0.6vw,10px)]
                     block
@@ -255,10 +362,19 @@ export default function ContactPage() {
                     text-black
                   "
                 >
-                  Message
+                  Message <span className="text-[#5a2df5]">*</span>
                 </label>
 
                 <textarea
+                  id="message"
+                  required
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      message: e.target.value,
+                    })
+                  }
                   className="
                     h-[clamp(100px,8vw,160px)]
                     w-full
@@ -289,6 +405,14 @@ export default function ContactPage() {
               >
                 <input
                   type="checkbox"
+                  required
+                  checked={formData.termsAccepted}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      termsAccepted: e.target.checked,
+                    })
+                  }
                   className="
                     h-[clamp(11px,0.8vw,15px)]
                     w-[clamp(11px,0.8vw,15px)]
@@ -303,13 +427,15 @@ export default function ContactPage() {
                   I agree with{" "}
                   <a href="#" className="underline underline-offset-1">
                     Terms &amp; Conditions
-                  </a>
+                  </a>{" "}
+                  <span className="text-[#5a2df5]">*</span>
                 </span>
               </label>
 
               {/* Button */}
               <button
                 type="submit"
+                disabled={!isFormComplete || isSubmitting}
                 className="
                   mt-[clamp(24px,2.5vw,40px)]
                   h-[clamp(40px,3.2vw,54px)]
@@ -322,14 +448,81 @@ export default function ContactPage() {
                   transition-transform
                   duration-200
                   hover:-translate-y-[2px]
+                  disabled:cursor-not-allowed
+                  disabled:opacity-60
+                  disabled:hover:translate-y-0
                 "
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
         </div>
       </section>
+
+      {feedback && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/25 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-feedback-title"
+        >
+          <div className="w-full max-w-[430px] rounded-[12px] border border-[#e5e0f5] bg-white p-[clamp(22px,2vw,30px)] text-center shadow-[0_18px_50px_rgba(17,17,27,0.18)]">
+            <div
+              className="
+                mx-auto
+                mb-4
+                flex
+                h-14
+                w-14
+                items-center
+                justify-center
+                rounded-full
+                bg-[#efe9ff]
+                text-[30px]
+                font-semibold
+                text-[#5a2df5]
+              "
+              aria-hidden="true"
+            >
+              {feedback.type === "success" ? "OK" : "!"}
+            </div>
+
+            <h4
+              id="contact-feedback-title"
+              className="mb-3 text-[clamp(24px,2vw,32px)] font-semibold italic leading-[1.2] tracking-[-0.03em] text-black"
+            >
+              {feedback.type === "success"
+                ? "Message Sent"
+                : "Message Not Sent"}
+            </h4>
+
+            <p className="mx-auto mb-6 max-w-[330px] text-[clamp(13px,1vw,16px)] leading-[1.6] text-black">
+              {feedback.message}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setFeedback(null)}
+              className="
+                h-[44px]
+                min-w-[150px]
+                rounded-full
+                bg-[#5d2bf6]
+                px-6
+                text-[16px]
+                font-semibold
+                text-white
+                transition-transform
+                duration-200
+                hover:-translate-y-[2px]
+              "
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       <SiteFooter />
     </main>
