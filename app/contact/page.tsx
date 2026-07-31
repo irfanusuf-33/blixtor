@@ -327,11 +327,12 @@ export default function ContactPage() {
                   id="phone"
                   type="tel"
                   required
+                  inputMode="numeric"
                   value={formData.phone}
-                  onChange={(e) =>
+                onChange={(e) =>
                     setFormData({
                       ...formData,
-                      phone: e.target.value,
+                      phone: e.target.value.replace(/[^0-9+()\- ]/g, ""),
                     })
                   }
                   className="
