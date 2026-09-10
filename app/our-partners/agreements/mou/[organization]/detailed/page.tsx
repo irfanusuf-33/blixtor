@@ -1,4 +1,3 @@
-
 "use client";
 
 import { use, useState, useRef, useEffect, Suspense } from "react";
@@ -48,7 +47,6 @@ function DetailedMouContent({
   // Agreement confirmation state
   const [isAgreed, setIsAgreed] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
 
   // Zoom & View state
   const [zoomLevel, setZoomLevel] = useState<number>(100);
@@ -125,7 +123,6 @@ function DetailedMouContent({
         setSignatureImage(dataUrl);
       }
     } else {
-      // Create an offscreen canvas to render the typed font cleanly to image
       const canvas = document.createElement("canvas");
       canvas.width = 400;
       canvas.height = 120;
@@ -136,7 +133,7 @@ function DetailedMouContent({
         if (selectedFont === "font-signature-1") fontStyle = "italic 40px 'Brush Script MT', 'Dancing Script', cursive, serif";
         if (selectedFont === "font-signature-2") fontStyle = "italic 36px 'Segoe Script', 'Great Vibes', cursive, serif";
         if (selectedFont === "font-signature-3") fontStyle = "italic 38px 'Lucida Handwriting', cursive, serif";
-        
+
         ctx.font = fontStyle;
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
@@ -161,7 +158,6 @@ function DetailedMouContent({
       return;
     }
     setIsSubmitted(true);
-    setShowSuccessToast(true);
     alert(`Form submitted successfully! A certified counter-signed agreement copy has been recorded and dispatched to ${metaData.email}.`);
   };
 
@@ -171,60 +167,127 @@ function DetailedMouContent({
     }
   };
 
-  // Reusable PDF Page Header
+  // Clean, perfectly aligned PDF Page Header
   const PageHeader = () => (
-    <div className="flex items-center justify-between pb-4 mb-6 border-b border-neutral-200">
-      <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-[#5a2df5] flex items-center justify-center text-white font-black text-xs shadow-sm">
+    <div className="flex items-center justify-between pb-3 mb-3 border-b border-neutral-200 w-full">
+      {/* Top Left: Blixtor Brand */}
+      <div className="flex items-center gap-2">
+        <div className="w-6 h-6 rounded-md bg-[#5a2df5] flex items-center justify-center text-white font-black text-xs shrink-0 shadow-xs">
           B
         </div>
         <div>
-          <span className="text-xs font-extrabold text-[#18034a] tracking-tight block">
+          <span className="text-[11px] font-extrabold text-[#18034a] tracking-tight block leading-tight">
             blixtor<span className="text-[#5a2df5]">.com.au</span>
           </span>
-          <span className="text-[9px] text-neutral-400 uppercase tracking-widest font-semibold block">
-            Education Directory &amp; Growth
+          <span className="text-[8px] text-neutral-400 uppercase tracking-widest font-semibold block leading-tight">
+            Strategic Business Growth
           </span>
         </div>
       </div>
 
+      {/* Top Right: Partner MOU Title */}
       <div className="text-right">
-        <span className="text-[11px] font-bold text-neutral-800 tracking-wide uppercase block">
-          Partnership Memorandum of Understanding
+        <span className="text-[10px] font-bold text-neutral-800 tracking-wide block leading-tight">
+          Blixtor | Strategic Business Growth &amp; Partner MoU
         </span>
-        <span className="text-[9px] text-neutral-400 font-mono block">
+        <span className="text-[8.5px] text-neutral-400 font-mono block leading-tight mt-0.5">
           Doc Ref: {metaData.documentId}
         </span>
       </div>
     </div>
   );
 
-  // Reusable PDF Page Footer
+  // Clean, perfectly aligned PDF Page Footer
   const PageFooter = ({ pageNumber }: { pageNumber: number }) => (
-    <div className="mt-auto pt-4 border-t border-neutral-200 flex items-center justify-between text-[10px] text-neutral-400">
-      <div className="flex items-center gap-2 font-medium">
+    <div className="mt-auto pt-3 border-t border-neutral-200 flex items-center justify-between text-[9px] text-neutral-400 w-full">
+      {/* Bottom Left: Brand */}
+      <div className="flex items-center gap-1.5 font-medium">
         <span className="text-[#5a2df5] font-semibold">blixtor.com.au</span>
         <span>•</span>
         <span>Commercial in Confidence</span>
       </div>
 
-      <div className="font-semibold text-neutral-600 truncate max-w-[240px]">
+      {/* Bottom Center: Organization Branding */}
+      <div className="font-semibold text-neutral-700 truncate max-w-[260px] text-center">
         {metaData.organization}
       </div>
 
-      <div className="font-mono font-bold text-neutral-700 bg-neutral-100 px-2 py-0.5 rounded">
+      {/* Bottom Right: Clean Page Number */}
+      <div className="font-mono font-bold text-neutral-700 bg-neutral-100 px-2 py-0.5 rounded text-[9px]">
         Page {pageNumber} of {totalPages}
       </div>
     </div>
   );
 
   return (
-    <main className="min-h-screen bg-[#323639] py-8 px-2 sm:px-6 lg:px-8 print:bg-white print:p-0">
-      <div className="max-w-[920px] mx-auto">
+    <main className="min-h-screen bg-[#323639] py-8 px-2 sm:px-6 lg:px-8 print:bg-white print:p-0 print:m-0">
+      {/* 
+        Embedded Print Styling:
+        1. @page margin: 0 suppresses browser's default header (URL, date, time) and footer (localhost link)
+        2. Strict A4 height & width prevents ghost blank pages
+        3. print-color-adjust guarantees full color fidelity
+      */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @media print {
+            @page {
+              size: A4 portrait;
+              margin: 0 !important;
+            }
+            html, body {
+              background: #ffffff !important;
+              color: #000000 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 210mm !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .no-print {
+              display: none !important;
+            }
+            .pdf-container {
+              transform: none !important;
+              width: 210mm !important;
+              max-width: 210mm !important;
+              margin: 0 auto !important;
+              padding: 0 !important;
+              gap: 0 !important;
+              space-y: 0 !important;
+            }
+            .pdf-page-sheet {
+              page-break-after: always !important;
+              break-after: page !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
+              width: 210mm !important;
+              height: 297mm !important;
+              min-height: 297mm !important;
+              max-height: 297mm !important;
+              box-sizing: border-box !important;
+              margin: 0 !important;
+              padding: 12mm 14mm 12mm 14mm !important;
+              border: none !important;
+              box-shadow: none !important;
+              border-radius: 0 !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: space-between !important;
+              overflow: hidden !important;
+            }
+            .pdf-page-sheet:last-child {
+              page-break-after: auto !important;
+              break-after: auto !important;
+            }
+          }
+        `
+      }} />
+
+      <div className="max-w-[920px] mx-auto print:max-w-none print:w-[210mm]">
         {/* =========================================================================
             STICKY PDF NAVIGATION & ACTION TOOLBAR (Hidden on Print)
         ========================================================================== */}
-        <aside aria-label="PDF Controls" className="sticky top-4 z-40 bg-[#1e2022]/95 backdrop-blur-md text-white rounded-2xl p-3 sm:p-4 mb-8 shadow-2xl border border-white/10 flex flex-wrap items-center justify-between gap-3 print:hidden">
+        <aside aria-label="PDF Controls" className="sticky top-4 z-40 bg-[#1e2022]/95 backdrop-blur-md text-white rounded-2xl p-3 sm:p-4 mb-8 shadow-2xl border border-white/10 flex flex-wrap items-center justify-between gap-3 no-print">
           <div className="flex items-center gap-3">
             <Link
               href={`/our-partners/agreements/mou/${orgSlug}?name=${encodeURIComponent(metaData.fullName)}&email=${encodeURIComponent(metaData.email)}&org=${encodeURIComponent(metaData.organization)}&pos=${encodeURIComponent(metaData.position)}`}
@@ -308,39 +371,39 @@ function DetailedMouContent({
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
               </svg>
-              <span>Print / PDF</span>
+              <span>Download PDF</span>
             </button>
           </div>
         </aside>
 
         {/* PDF Document Pages Container */}
         <div
-          className="space-y-8 transition-transform origin-top duration-200 print:space-y-0 print:transform-none"
+          className="pdf-container space-y-8 transition-transform origin-top duration-200"
           style={{ transform: `scale(${zoomLevel / 100})` }}
         >
           {/* =========================================================================
               PAGE 1 OF 6: AGREEMENT HEADING, PARTIES, SERVICES, FEES & PAYMENT TERMS
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:break-after-page print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
               {/* Title Section */}
-              <div className="text-center my-6 pb-6 border-b border-neutral-200">
-                <div className="inline-block px-3 py-1 rounded bg-[#5a2df5]/10 text-[#5a2df5] text-[10px] font-bold uppercase tracking-widest mb-2">
+              <div className="text-center my-3 pb-3 border-b border-neutral-200">
+                <div className="inline-block px-2.5 py-0.5 rounded bg-[#5a2df5]/10 text-[#5a2df5] text-[9px] font-bold uppercase tracking-widest mb-1">
                   Standard Terms of Listing Partnership
                 </div>
-                <h1 className="text-xl sm:text-2xl font-extrabold text-[#18034a] tracking-tight">
+                <h1 className="text-lg sm:text-xl font-extrabold text-[#18034a] tracking-tight">
                   MEMORANDUM OF UNDERSTANDING (MOU)
                 </h1>
-                <p className="text-xs text-neutral-500 font-medium mt-1">
+                <p className="text-[10.5px] text-neutral-500 font-medium mt-0.5">
                   Course Listing, Student Acquisition, and Digital Prospect Routing Framework
                 </p>
               </div>
 
               {/* Parties to Agreement */}
-              <div className="mb-6">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2 flex items-center justify-between">
+              <div className="mb-4">
+                <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5 flex items-center justify-between">
                   <span>1. Parties to the Agreement</span>
                   <button
                     type="button"
@@ -348,56 +411,56 @@ function DetailedMouContent({
                       setTempEditForm({ ...metaData });
                       setIsEditModalOpen(true);
                     }}
-                    className="text-[10px] text-[#5a2df5] font-semibold hover:underline print:hidden cursor-pointer"
+                    className="text-[9px] text-[#5a2df5] font-semibold hover:underline no-print cursor-pointer"
                   >
                     ✎ Edit Party Info
                   </button>
                 </h2>
-                <p className="text-xs text-neutral-600 mb-3">
+                <p className="text-[10.5px] text-neutral-600 mb-2 leading-relaxed">
                   This Memorandum of Understanding (&ldquo;Agreement&rdquo;) is entered into and made effective as of the execution date, by and between:
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                  <div className="p-3.5 rounded-lg bg-neutral-50 border border-neutral-200">
-                    <strong className="block text-neutral-900 font-bold text-[11px] uppercase tracking-wider mb-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10.5px]">
+                  <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200">
+                    <strong className="block text-neutral-900 font-bold text-[9.5px] uppercase tracking-wider mb-0.5">
                       Party A: Platform Operator
                     </strong>
                     <p className="font-semibold text-neutral-800">Blixtor Pty Ltd (ACN 648 119 203)</p>
                     <p className="text-neutral-500">Trading as Blixtor.com.au</p>
                     <p className="text-neutral-500">Level 24, 300 Barangaroo Ave, Sydney NSW 2000</p>
-                    <p className="text-neutral-500 font-mono text-[11px]">partnerships@blixtor.com.au</p>
+                    <p className="text-neutral-500 font-mono text-[10px]">partnerships@blixtor.com.au</p>
                   </div>
 
-                  <div className="p-3.5 rounded-lg bg-purple-50/50 border border-purple-200/80 relative group">
-                    <strong className="block text-[#5a2df5] font-bold text-[11px] uppercase tracking-wider mb-1">
+                  <div className="p-2.5 rounded-lg bg-purple-50/50 border border-purple-200/80 relative group">
+                    <strong className="block text-[#5a2df5] font-bold text-[9.5px] uppercase tracking-wider mb-0.5">
                       Party B: Training Provider / Organization
                     </strong>
                     <p className="font-bold text-neutral-900">{metaData.organization}</p>
                     <p className="text-neutral-600">Authorized Signatory: <span className="font-medium text-neutral-800">{metaData.fullName}</span></p>
                     <p className="text-neutral-600">Position: <span className="font-medium text-neutral-800">{metaData.position}</span></p>
-                    <p className="text-neutral-600 font-mono text-[11px]">{metaData.email}</p>
+                    <p className="text-neutral-600 font-mono text-[10px]">{metaData.email}</p>
                   </div>
                 </div>
               </div>
 
               {/* Services Section */}
-              <div className="mb-6 text-xs text-neutral-700 leading-relaxed space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+              <div className="mb-4 text-[10.5px] text-neutral-700 leading-relaxed space-y-1">
+                <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                   2. Services &amp; Platform Deployment
                 </h2>
                 <p>
                   Blixtor operates an Australian digital education marketplace connecting prospective learners with registered training organisations, higher education institutes, and course providers. Under this Agreement, Blixtor shall provide the following core listing services:
                 </p>
-                <ul className="list-disc pl-5 space-y-1 text-neutral-600">
-                  <li><strong>Course Profile Placement:</strong> Comprehensive publication of Provider&rsquo;s approved course titles, curriculum outlines, delivery modes, and career outcomes across Blixtor&rsquo;s searchable directory.</li>
-                  <li><strong>Lead Capture &amp; Pre-Qualification:</strong> Intake of prospective student enquiries with mandatory verification of Australian residency status, contact validity, and prerequisite eligibility.</li>
-                  <li><strong>Automated Influx Routing:</strong> Seamless routing of genuine prospective learner records directly into the Provider&rsquo;s nominated CRM endpoint or secure email inbox.</li>
+                <ul className="list-disc pl-5 space-y-0.5 text-neutral-600">
+                  <li><strong>Course Profile Placement:</strong> Publication of Provider&rsquo;s approved course titles, curriculum outlines, delivery modes, and career outcomes across Blixtor&rsquo;s directory.</li>
+                  <li><strong>Lead Capture &amp; Pre-Qualification:</strong> Intake of student enquiries with mandatory verification of Australian residency, contact validity, and prerequisite eligibility.</li>
+                  <li><strong>Automated Influx Routing:</strong> Seamless routing of prospective learner records directly into the Provider&rsquo;s nominated CRM endpoint or secure email inbox.</li>
                 </ul>
               </div>
 
               {/* Fees and Payment Terms */}
-              <div className="text-xs text-neutral-700 leading-relaxed space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+              <div className="text-[10.5px] text-neutral-700 leading-relaxed space-y-1">
+                <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                   3. Fees and Payment Terms
                 </h2>
                 <p>
@@ -421,19 +484,19 @@ function DetailedMouContent({
           {/* =========================================================================
               PAGE 2 OF 6: LISTING CONTENT, LEAD DELIVERY, TERMINATION, CONFIDENTIALITY, CONTRACTOR
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:break-after-page print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
-              <div className="space-y-5 text-xs text-neutral-700 leading-relaxed">
+              <div className="space-y-3.5 text-[10.5px] text-neutral-700 leading-relaxed">
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     4. Listing Content &amp; Regulatory Accuracy
                   </h2>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     4.1 <strong>Provider Warranty:</strong> The Provider warrants that all course details, pricing structures, entry requirements, government funding eligibility (Smart and Skilled, Fee-Free TAFE, VET Student Loans), and national course codes provided to Blixtor are accurate, compliant, and up-to-date.
                   </p>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     4.2 <strong>ASQA / TEQSA Compliance:</strong> Both Parties agree to comply strictly with the <em>Standards for RTOs 2015</em>, the <em>National Vocational Education and Training Regulator Act 2011</em>, and Australian Consumer Law regarding transparent advertising of educational services.
                   </p>
                   <p>
@@ -442,10 +505,10 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     5. Lead Delivery &amp; System Integration
                   </h2>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     5.1 <strong>Transmission Channels:</strong> Student enquiries will be securely transmitted in real-time via HTTPS REST API Webhooks, direct CRM integration (Salesforce, HubSpot, JobReady, VETtrak), or encrypted email notifications.
                   </p>
                   <p>
@@ -454,13 +517,13 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     6. Term &amp; Termination
                   </h2>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     6.1 <strong>Term:</strong> This Agreement commences upon electronic execution and continues on a flexible rolling monthly term until terminated in accordance with this clause.
                   </p>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     6.2 <strong>Termination for Convenience:</strong> Either Party may terminate this Agreement at any time, without penalty or lock-in liability, by providing fourteen (14) calendar days written notice to the other Party.
                   </p>
                   <p>
@@ -469,10 +532,10 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     7. Confidentiality &amp; Proprietary Rights
                   </h2>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     7.1 <strong>Confidential Information:</strong> Each Party undertakes to maintain strict confidentiality regarding all non-public operational data, lead volumes, pricing arrangements, technical architectures, and business methodologies disclosed during the term.
                   </p>
                   <p>
@@ -481,11 +544,11 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     8. Independent Contractor Status
                   </h2>
                   <p>
-                    The relationship between Blixtor and the Provider is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, agency, partnership, joint venture, or fiduciary affiliation between the Parties. Neither Party has the authority to bind the other in any manner whatsoever.
+                    The relationship between Blixtor and the Provider is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, agency, partnership, joint venture, or fiduciary affiliation between the Parties.
                   </p>
                 </div>
               </div>
@@ -497,19 +560,19 @@ function DetailedMouContent({
           {/* =========================================================================
               PAGE 3 OF 6: RESTRICTIONS ON LEAD USE, LEGAL LIABILITY & DISCLAIMERS
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:break-after-page print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
-              <div className="space-y-4 text-xs text-neutral-700 leading-relaxed">
+              <div className="space-y-3 text-[10.5px] text-neutral-700 leading-relaxed">
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     9. Restrictions on Lead Use &amp; Privacy Compliance
                   </h2>
-                  <p className="mb-1.5">
+                  <p className="mb-1">
                     9.1 <strong>Single Organization Restriction:</strong> Enquiries delivered by Blixtor are licensed strictly for internal recruitment and enrolment follow-up by the Provider. The Provider shall not broker, resell, syndicate, rent, or distribute prospect contact data to third-party marketing entities or affiliates.
                   </p>
-                  <p className="mb-1.5">
+                  <p className="mb-1">
                     9.2 <strong>Spam Act 2003 &amp; Do Not Call Register:</strong> The Provider must comply with the <em>Spam Act 2003 (Cth)</em> and <em>Do Not Call Register Act 2006</em>, ensuring all student communications provide clear opt-out / unsubscribe mechanisms and accurate sender identification.
                   </p>
                   <p>
@@ -518,50 +581,43 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     10. Legal Liability &amp; Disclaimers
                   </h2>
 
-                  <div className="space-y-2.5 pl-2 border-l-2 border-purple-200">
+                  <div className="space-y-1.5 pl-2 border-l-2 border-purple-200">
                     <div>
                       <strong className="text-neutral-900 font-bold block">10.1 No Guarantee of Result / Enrolment Conversions</strong>
                       <p className="text-neutral-600">
-                        While Blixtor employs high-intent targeting and strict validation mechanisms, Blixtor does not guarantee that delivered enquiries will convert into matriculated or paid course enrolments. Conversion success remains dependent upon the Provider&rsquo;s admissions speed, course pricing, student intake capacities, and sales counseling quality.
+                        While Blixtor employs high-intent targeting and strict validation mechanisms, Blixtor does not guarantee that delivered enquiries will convert into matriculated or paid course enrolments. Conversion success remains dependent upon the Provider&rsquo;s admissions speed, pricing, and counseling quality.
                       </p>
                     </div>
 
                     <div>
                       <strong className="text-neutral-900 font-bold block">10.2 Lead Behaviour &amp; Accuracy</strong>
                       <p className="text-neutral-600">
-                        Blixtor relies on the accuracy of prospective student submissions. Blixtor is not liable for instances where a prospect alters their career intent, enters inaccurate personal context, fails to answer communications, or declines enrolment upon further consultation.
+                        Blixtor relies on prospective student submissions. Blixtor is not liable for instances where a prospect alters their career intent, enters inaccurate personal context, fails to answer communications, or declines enrolment.
                       </p>
                     </div>
 
                     <div>
                       <strong className="text-neutral-900 font-bold block">10.3 Client / Provider Responsibilities</strong>
                       <p className="text-neutral-600">
-                        The Provider bears sole responsibility for prompt outreach to student enquiries, student admission vetting, verifying student visas or USI credentials, delivering training packages, and managing student academic progress.
+                        The Provider bears sole responsibility for prompt outreach to student enquiries, student admission vetting, verifying student visas or USI credentials, and delivering training packages.
                       </p>
                     </div>
 
                     <div>
                       <strong className="text-neutral-900 font-bold block">10.4 Limitation of Liability</strong>
                       <p className="text-neutral-600">
-                        To the maximum extent permitted by Australian law, neither Party shall be liable for indirect, incidental, special, consequential, or punitive damages (including loss of profits, goodwill, or business opportunity). Blixtor&rsquo;s aggregate liability arising under this Agreement shall not exceed the total fees paid by the Provider to Blixtor in the three (3) months preceding the claim.
+                        To the maximum extent permitted by Australian law, neither Party shall be liable for indirect, incidental, special, consequential, or punitive damages. Blixtor&rsquo;s aggregate liability arising under this Agreement shall not exceed the total fees paid by the Provider in the three (3) months preceding the claim.
                       </p>
                     </div>
 
                     <div>
-                      <strong className="text-neutral-900 font-bold block">10.5 Force Majeure</strong>
+                      <strong className="text-neutral-900 font-bold block">10.5 Force Majeure &amp; 10.6 Indemnity</strong>
                       <p className="text-neutral-600">
-                        Neither Party shall be held liable for failure or delay in performance resulting from causes beyond reasonable control, including natural disasters, acts of government, civil disturbances, power outages, major telecommunication failures, or denial of service attacks.
-                      </p>
-                    </div>
-
-                    <div>
-                      <strong className="text-neutral-900 font-bold block">10.6 Indemnity &amp; Hold Harmless</strong>
-                      <p className="text-neutral-600">
-                        The Provider agrees to defend, indemnify, and hold harmless Blixtor and its officers against any third-party claims, fines, damages, or legal costs arising from the Provider&rsquo;s breach of accreditation standards, false course representations, or failure to deliver educational services.
+                        Neither Party shall be held liable for failure resulting from natural disasters or telecom outages. The Provider agrees to defend and indemnify Blixtor against claims arising from course misrepresentations or failure to deliver educational services.
                       </p>
                     </div>
                   </div>
@@ -575,20 +631,20 @@ function DetailedMouContent({
           {/* =========================================================================
               PAGE 4 OF 6: AMENDMENT OF TERMS, IP, DATA PRIVACY & GOVERNING LAW
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:break-after-page print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
-              <div className="space-y-5 text-xs text-neutral-700 leading-relaxed">
+              <div className="space-y-3.5 text-[10.5px] text-neutral-700 leading-relaxed">
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     11. Amendment of Terms &amp; Variations
                   </h2>
-                  <p className="mb-2">
-                    11.1 <strong>Mutual Agreement:</strong> No modification, addendum, or variation of this Memorandum of Understanding shall be effective unless formulated in writing and mutually signed or acknowledged electronically by authorized representatives of both Parties.
+                  <p className="mb-1">
+                    11.1 <strong>Mutual Agreement:</strong> No modification or variation of this Memorandum of Understanding shall be effective unless formulated in writing and mutually signed or acknowledged electronically by authorized representatives of both Parties.
                   </p>
-                  <p className="mb-2">
-                    11.2 <strong>Platform Policy Adjustments:</strong> Blixtor reserves the right to periodically update general platform security protocols, API delivery endpoints, and user verification tools. Blixtor shall provide fourteen (14) days prior electronic notice for any operational modifications that materially affect the Provider.
+                  <p className="mb-1">
+                    11.2 <strong>Platform Policy Adjustments:</strong> Blixtor reserves the right to periodically update general platform security protocols, API delivery endpoints, and verification tools with fourteen (14) days prior notice.
                   </p>
                   <p>
                     11.3 <strong>Fee Adjustments:</strong> Any proposed adjustment to per-lead category pricing shall require written notification and the express consent of the Provider prior to the commencement of the relevant billing period.
@@ -596,22 +652,22 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     12. Intellectual Property &amp; Trademark License
                   </h2>
-                  <p className="mb-2">
-                    12.1 <strong>Limited Marketing License:</strong> The Provider hereby grants Blixtor a non-exclusive, revocable, royalty-free license to display the Provider&rsquo;s official name, logo, course guides, campus imagery, and registered trademarks on Blixtor.com.au for the sole purpose of promoting the Provider&rsquo;s courses to prospective students.
+                  <p className="mb-1">
+                    12.1 <strong>Limited Marketing License:</strong> The Provider hereby grants Blixtor a non-exclusive, revocable, royalty-free license to display the Provider&rsquo;s official name, logo, course guides, and registered trademarks on Blixtor.com.au for promoting the courses.
                   </p>
-                  <p className="mb-2">
-                    12.2 <strong>Ownership Retained:</strong> All trademarks, course content, and curriculum copyrights remain the exclusive intellectual property of the Provider. All software, search algorithms, lead management interfaces, and platform branding remain the exclusive intellectual property of Blixtor.
+                  <p>
+                    12.2 <strong>Ownership Retained:</strong> All trademarks and course content remain the exclusive intellectual property of the Provider. All software, search algorithms, and platform branding remain the exclusive intellectual property of Blixtor.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     13. Data Privacy &amp; Australian Privacy Principles
                   </h2>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     13.1 Both Parties agree to adhere strictly to the <em>Privacy Act 1988 (Cth)</em> and the Australian Privacy Principles (APPs) with respect to all personal information collected, processed, transferred, or stored in connection with this Agreement.
                   </p>
                   <p>
@@ -620,17 +676,17 @@ function DetailedMouContent({
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-1.5">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     14. Dispute Resolution &amp; Governing Law
                   </h2>
-                  <p className="mb-2">
-                    14.1 <strong>Amicable Resolution:</strong> In the event of any dispute or claim arising out of or in connection with this Agreement, the Parties agree to engage in good faith executive discussions within ten (10) business days of written notice.
+                  <p className="mb-1">
+                    14.1 <strong>Amicable Resolution:</strong> In the event of any dispute arising under this Agreement, the Parties agree to engage in good faith executive discussions within ten (10) business days.
                   </p>
-                  <p className="mb-2">
+                  <p className="mb-1">
                     14.2 <strong>Mediation:</strong> If the dispute cannot be settled amicably within thirty (30) days, it shall be referred to mediation conducted by the Australian Disputes Centre (ADC) in Sydney, NSW.
                   </p>
                   <p>
-                    14.3 <strong>Jurisdiction:</strong> This Agreement is governed by and construed in accordance with the laws of the State of New South Wales, Australia. The Parties submit to the non-exclusive jurisdiction of the courts of New South Wales.
+                    14.3 <strong>Jurisdiction:</strong> This Agreement is governed by and construed in accordance with the laws of the State of New South Wales, Australia.
                   </p>
                 </div>
               </div>
@@ -642,63 +698,63 @@ function DetailedMouContent({
           {/* =========================================================================
               PAGE 5 OF 6: AGREEMENT SUMMARY & ENTIRE AGREEMENT
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:break-after-page print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
-              <div className="space-y-6 text-xs text-neutral-700 leading-relaxed">
+              <div className="space-y-3.5 text-[10.5px] text-neutral-700 leading-relaxed">
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     15. Entire Agreement &amp; Integration
                   </h2>
-                  <div className="p-4 rounded-xl bg-purple-50/50 border border-purple-100 text-neutral-800">
-                    <p className="font-semibold mb-2">
+                  <div className="p-3 rounded-xl bg-purple-50/50 border border-purple-100 text-neutral-800">
+                    <p className="font-semibold mb-0.5">
                       This Memorandum of Understanding (MOU) constitutes the entire and sole agreement between Blixtor Pty Ltd and {metaData.organization} regarding the listing of courses and generation of student enquiries on Blixtor.com.au.
                     </p>
                     <p className="text-neutral-600">
-                      This Agreement supersedes and replaces all prior oral or written discussions, representations, promises, understandings, email exchanges, and previous agreements between the Parties concerning the subject matter hereof.
+                      This Agreement supersedes and replaces all prior oral or written discussions, representations, promises, understandings, email exchanges, and previous agreements between the Parties.
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     16. Severability &amp; Non-Waiver
                   </h2>
-                  <p className="mb-2">
-                    16.1 <strong>Severability:</strong> If any provision of this Agreement is held to be invalid, illegal, or unenforceable by any court or administrative body of competent jurisdiction, such invalidity shall not affect the remaining provisions of this Agreement, which shall continue in full force and effect.
+                  <p className="mb-1">
+                    16.1 <strong>Severability:</strong> If any provision of this Agreement is held to be invalid or unenforceable, such invalidity shall not affect the remaining provisions, which shall continue in full force and effect.
                   </p>
                   <p>
-                    16.2 <strong>No Waiver:</strong> The failure or delay by either Party to enforce any right or remedy under this Agreement shall not be construed as a waiver of that right or remedy or any subsequent breach.
+                    16.2 <strong>No Waiver:</strong> The failure or delay by either Party to enforce any right under this Agreement shall not be construed as a waiver of that right or any subsequent breach.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     17. Counterparts &amp; Digital Execution
                   </h2>
                   <p>
-                    This Agreement may be executed in any number of counterparts, each of which when executed shall constitute a duplicate original, but all the counterparts shall together constitute the one agreement. Execution by digital signature, electronic confirmation, or certified cryptographic transmission shall be deemed legally binding under the <em>Electronic Transactions Act 1999 (Cth)</em>.
+                    This Agreement may be executed in any number of counterparts, each of which shall constitute an original. Execution by digital signature, electronic confirmation, or certified cryptographic transmission shall be deemed legally binding under the <em>Electronic Transactions Act 1999 (Cth)</em>.
                   </p>
                 </div>
 
                 <div>
-                  <h2 className="text-xs font-bold uppercase tracking-wider text-[#5a2df5] mb-2">
+                  <h2 className="text-[10.5px] font-bold uppercase tracking-wider text-[#5a2df5] mb-1">
                     18. Official Notice &amp; Operational Directory
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-                    <div className="p-3.5 rounded-lg bg-neutral-50 border border-neutral-200">
-                      <strong className="block text-neutral-900 font-bold mb-1">Blixtor Legal &amp; Notices:</strong>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[10px]">
+                    <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200">
+                      <strong className="block text-neutral-900 font-bold mb-0.5">Blixtor Legal &amp; Notices:</strong>
                       <p className="text-neutral-600">Blixtor Operations &amp; Legal Counsel</p>
                       <p className="text-neutral-600">Email: legal@blixtor.com.au</p>
                       <p className="text-neutral-600">Enquiries: partnerships@blixtor.com.au</p>
                     </div>
 
-                    <div className="p-3.5 rounded-lg bg-neutral-50 border border-neutral-200">
-                      <strong className="block text-neutral-900 font-bold mb-1">Partner Operational Contact:</strong>
+                    <div className="p-2.5 rounded-lg bg-neutral-50 border border-neutral-200">
+                      <strong className="block text-neutral-900 font-bold mb-0.5">Partner Operational Contact:</strong>
                       <p className="text-neutral-600">Attn: {metaData.fullName}</p>
                       <p className="text-neutral-600">Title: {metaData.position}</p>
-                      <p className="text-neutral-600 font-mono text-[11px]">Email: {metaData.email}</p>
+                      <p className="text-neutral-600 font-mono">Email: {metaData.email}</p>
                     </div>
                   </div>
                 </div>
@@ -711,36 +767,36 @@ function DetailedMouContent({
           {/* =========================================================================
               PAGE 6 OF 6: EXECUTED AS AN AGREEMENT (EDITABLE SCREENSHOT SECTION)
           ========================================================================== */}
-          <section className="bg-white rounded-xl shadow-2xl p-8 sm:p-12 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80 print:shadow-none print:border-none print:rounded-none print:p-8 print:min-h-screen">
+          <section className="pdf-page-sheet bg-white rounded-xl shadow-2xl p-7 sm:p-10 min-h-[1050px] flex flex-col justify-between text-neutral-800 border border-neutral-200/80">
             <div>
               <PageHeader />
 
               {/* Execution Header */}
-              <div className="mb-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-widest border border-emerald-200 mb-2">
+              <div className="mb-3">
+                <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[9px] font-bold uppercase tracking-widest border border-emerald-200 mb-1">
                   ✓ Section 19 • Formal Execution Record
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-[#18034a] tracking-tight uppercase">
+                <h2 className="text-lg sm:text-xl font-extrabold text-[#18034a] tracking-tight uppercase">
                   EXECUTED AS AN AGREEMENT
                 </h2>
-                <p className="text-xs text-neutral-500 mt-1">
+                <p className="text-[10.5px] text-neutral-500 mt-0.5">
                   IN WITNESS WHEREOF, the Parties hereto have caused this Memorandum of Understanding to be executed by their duly authorized representatives as of the dates specified below.
                 </p>
               </div>
 
               {/* Redesigned Premium Execution Block (from user screenshot) */}
-              <div className="relative bg-[#faf8f5] rounded-2xl border-l-4 border-l-[#5a2df5] border-y border-r border-neutral-200 p-6 sm:p-8 mb-6 shadow-sm">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              <div className="relative bg-[#faf8f5] rounded-2xl border-l-4 border-l-[#5a2df5] border-y border-r border-neutral-200 p-4 sm:p-5 mb-3 shadow-xs">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-7">
                   {/* Left Column: Blixtor Signatory */}
-                  <div className="space-y-4">
-                    <h3 className="text-xs sm:text-sm font-extrabold text-[#18034a] leading-snug">
+                  <div className="space-y-2.5">
+                    <h3 className="text-[11px] font-extrabold text-[#18034a] leading-snug">
                       Signed for and on behalf of Webwise Pty Ltd (Get Course / Blixtor)
                     </h3>
 
                     {/* Signature Preview */}
-                    <div className="h-24 flex items-center justify-start py-2 border-b border-neutral-300">
+                    <div className="h-16 flex items-center justify-start py-1 border-b border-neutral-300">
                       <svg
-                        className="w-44 h-16 text-[#18034a]"
+                        className="w-36 h-12 text-[#18034a]"
                         viewBox="0 0 200 80"
                         fill="none"
                         stroke="currentColor"
@@ -752,30 +808,30 @@ function DetailedMouContent({
                       </svg>
                     </div>
 
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                    <div className="space-y-1 text-[10.5px]">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Signature
                         </span>
-                        <span className="text-neutral-500 font-mono text-[11px]">Digitally Certified (SSL)</span>
+                        <span className="text-neutral-500 font-mono text-[9.5px]">Digitally Certified (SSL)</span>
                       </div>
 
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Name
                         </span>
-                        <span className="font-bold text-neutral-900 text-sm">Thom Gardner</span>
+                        <span className="font-bold text-neutral-900 text-xs">Thom Gardner</span>
                       </div>
 
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Position
                         </span>
                         <span className="font-semibold text-neutral-800">DBA / Head of Systems</span>
                       </div>
 
                       <div className="flex items-baseline justify-between">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Date
                         </span>
                         <span className="font-mono font-bold text-neutral-900">04/09/2026</span>
@@ -784,9 +840,9 @@ function DetailedMouContent({
                   </div>
 
                   {/* Right Column: Organization Signatory (CLICKABLE / EDITABLE) */}
-                  <div className="space-y-4">
+                  <div className="space-y-2.5">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xs sm:text-sm font-extrabold text-[#18034a] leading-snug">
+                      <h3 className="text-[11px] font-extrabold text-[#18034a] leading-snug">
                         Signed for and on behalf of {metaData.organization}
                       </h3>
                       <button
@@ -795,7 +851,7 @@ function DetailedMouContent({
                           setTempEditForm({ ...metaData });
                           setIsEditModalOpen(true);
                         }}
-                        className="text-[10px] font-bold text-[#5a2df5] hover:underline shrink-0 ml-2 print:hidden cursor-pointer"
+                        className="text-[9px] font-bold text-[#5a2df5] hover:underline shrink-0 ml-2 no-print cursor-pointer"
                       >
                         ✎ Edit
                       </button>
@@ -804,7 +860,7 @@ function DetailedMouContent({
                     {/* Clickable Signature Box */}
                     <div
                       onClick={() => setIsSignModalOpen(true)}
-                      className="group h-24 flex items-center justify-center p-3 rounded-xl bg-purple-50/70 hover:bg-purple-100/80 border-2 border-dashed border-[#5a2df5]/50 hover:border-[#5a2df5] text-center cursor-pointer transition-all duration-200 relative overflow-hidden"
+                      className="group h-16 flex items-center justify-center p-2 rounded-xl bg-purple-50/70 hover:bg-purple-100/80 border-2 border-dashed border-[#5a2df5]/50 hover:border-[#5a2df5] text-center cursor-pointer transition-all duration-200 relative overflow-hidden"
                       title="Click to draw or type digital signature"
                     >
                       {signatureImage ? (
@@ -813,55 +869,52 @@ function DetailedMouContent({
                           <img
                             src={signatureImage}
                             alt="Digital Signature"
-                            className="max-h-14 max-w-[220px] object-contain"
+                            className="max-h-10 max-w-[180px] object-contain"
                           />
-                          <span className="text-[9px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 mt-1">
-                            ✓ Signature Applied • Click to Change
+                          <span className="text-[7.5px] font-bold text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded-full border border-emerald-200 mt-0.5 no-print">
+                            ✓ Signature Applied
                           </span>
                         </div>
                       ) : (
-                        <div className="flex flex-col items-center justify-center gap-1">
-                          <div className="w-7 h-7 rounded-full bg-[#5a2df5]/10 text-[#5a2df5] flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex flex-col items-center justify-center gap-0.5">
+                          <div className="w-5 h-5 rounded-full bg-[#5a2df5]/10 text-[#5a2df5] flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
                           </div>
-                          <span className="text-xs sm:text-sm font-extrabold text-[#5a2df5] tracking-wide">
+                          <span className="text-[11px] font-extrabold text-[#5a2df5] tracking-wide">
                             Add signature
-                          </span>
-                          <span className="text-[10px] text-neutral-400">
-                            Click to draw or type signature
                           </span>
                         </div>
                       )}
                     </div>
 
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                    <div className="space-y-1 text-[10.5px]">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Signature
                         </span>
-                        <span className="text-neutral-500 font-mono text-[11px]">
+                        <span className="text-neutral-500 font-mono text-[9.5px]">
                           {signatureImage ? "Verified Cryptographic Seal" : "Pending Signature"}
                         </span>
                       </div>
 
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Name
                         </span>
-                        <span className="font-bold text-neutral-900 text-sm">{metaData.fullName}</span>
+                        <span className="font-bold text-neutral-900 text-xs">{metaData.fullName}</span>
                       </div>
 
-                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-1.5">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                      <div className="flex items-baseline justify-between border-b border-neutral-200/80 pb-0.5">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Position
                         </span>
                         <span className="font-semibold text-neutral-800">{metaData.position}</span>
                       </div>
 
                       <div className="flex items-baseline justify-between">
-                        <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider w-20">
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider w-16">
                           Date
                         </span>
                         <span className="font-mono font-bold text-neutral-900">{metaData.signedDate}</span>
@@ -872,38 +925,38 @@ function DetailedMouContent({
               </div>
 
               {/* Cryptographic Verification Audit Card */}
-              <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200 text-[11px] text-neutral-600 space-y-2 mb-6">
+              <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 text-[9.5px] text-neutral-600 space-y-0.5 mb-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 font-mono">
                   <span><strong>Audit Certificate Ref:</strong> {metaData.documentId}</span>
                   <span className="text-emerald-700 font-bold">SHA-256 Validated • Tamper-Proof</span>
                 </div>
-                <p className="text-[10px] text-neutral-400">
+                <p className="text-[8.5px] text-neutral-400 leading-tight">
                   This document was electronically generated and signed in compliance with the Electronic Transactions Act 1999 (Cth). Counterparts and electronic copies are legally binding upon execution.
                 </p>
               </div>
 
               {/* =========================================================================
-                  SIGN & CONFIRM AUTHORIZATION CHECKBOX & SUBMIT SECTION
+                  SIGN & CONFIRM AUTHORIZATION CHECKBOX & SUBMIT SECTION (Screen Only)
               ========================================================================== */}
-              <div className="p-5 rounded-2xl bg-purple-50/70 border border-purple-200 text-neutral-800 space-y-4 print:hidden">
-                <label className="flex items-start gap-3 cursor-pointer group select-none">
+              <div className="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 text-neutral-800 space-y-2.5 no-print">
+                <label className="flex items-start gap-2.5 cursor-pointer group select-none">
                   <input
                     type="checkbox"
                     checked={isAgreed}
                     onChange={(e) => setIsAgreed(e.target.checked)}
-                    className="mt-1 w-4 h-4 rounded text-[#5a2df5] border-neutral-300 focus:ring-[#5a2df5] cursor-pointer"
+                    className="mt-0.5 w-4 h-4 rounded text-[#5a2df5] border-neutral-300 focus:ring-[#5a2df5] cursor-pointer"
                   />
-                  <span className="text-xs sm:text-sm font-medium text-neutral-800 leading-relaxed group-hover:text-neutral-900">
+                  <span className="text-xs font-medium text-neutral-800 leading-relaxed group-hover:text-neutral-900">
                     I am authorised to sign for <strong className="text-[#5a2df5]">{metaData.organization}</strong>, I have read this agreement and agree to be bound by it. My electronic signature has the same effect as a handwritten one.
                   </span>
                 </label>
 
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-purple-100">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 border-t border-purple-100">
                   <div className="text-xs text-neutral-500">
                     {signatureImage ? (
                       <span className="text-emerald-600 font-semibold flex items-center gap-1.5">
                         <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                        Signature ready for execution
+                        Signature attached
                       </span>
                     ) : (
                       <span className="text-amber-600 font-semibold flex items-center gap-1.5">
@@ -917,14 +970,13 @@ function DetailedMouContent({
                     type="button"
                     onClick={handleSubmitAgreement}
                     disabled={!isAgreed}
-                    className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-12 px-8 rounded-xl font-bold text-sm sm:text-base shadow-lg transition-all duration-300 ${
-                      isAgreed
+                    className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 h-10 px-6 rounded-xl font-bold text-xs sm:text-sm shadow-lg transition-all duration-300 ${isAgreed
                         ? "bg-gradient-to-r from-[#5627ed] via-[#794dfc] to-[#5627ed] bg-[length:200%_100%] hover:bg-[100%_0] text-white shadow-[#5a2df5]/30 hover:shadow-xl hover:shadow-[#5a2df5]/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                         : "bg-neutral-200 text-neutral-400 cursor-not-allowed shadow-none"
-                    }`}
+                      }`}
                   >
                     <span>Sign and Confirm</span>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.2} d="M5 13l4 4L19 7" />
                     </svg>
                   </button>
@@ -941,7 +993,7 @@ function DetailedMouContent({
           MODAL 1: EDIT DETAILS MODAL
       ========================================================================== */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200 no-print">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-purple-100 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 mb-6 border-b border-neutral-200">
               <div className="flex items-center gap-2.5">
@@ -1060,7 +1112,7 @@ function DetailedMouContent({
           MODAL 2: DIGITAL SIGNATURE DRAW / TYPE MODAL
       ========================================================================== */}
       {isSignModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200 no-print">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-purple-100">
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-neutral-200">
               <div className="flex items-center gap-2.5">
@@ -1089,22 +1141,20 @@ function DetailedMouContent({
               <button
                 type="button"
                 onClick={() => setSignatureMode("draw")}
-                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  signatureMode === "draw"
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${signatureMode === "draw"
                     ? "bg-white text-[#5a2df5] shadow-xs"
                     : "text-neutral-500 hover:text-neutral-900"
-                }`}
+                  }`}
               >
                 ✍ Draw Signature
               </button>
               <button
                 type="button"
                 onClick={() => setSignatureMode("type")}
-                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                  signatureMode === "type"
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${signatureMode === "type"
                     ? "bg-white text-[#5a2df5] shadow-xs"
                     : "text-neutral-500 hover:text-neutral-900"
-                }`}
+                  }`}
               >
                 ⌨ Type Signature
               </button>
@@ -1169,11 +1219,10 @@ function DetailedMouContent({
                     <button
                       type="button"
                       onClick={() => setSelectedFont("font-signature-1")}
-                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
-                        selectedFont === "font-signature-1"
+                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${selectedFont === "font-signature-1"
                           ? "border-[#5a2df5] bg-[#5a2df5]/10 text-[#5a2df5] ring-2 ring-[#5a2df5]/20"
                           : "border-neutral-200 hover:border-neutral-300 bg-white"
-                      }`}
+                        }`}
                     >
                       <span className="font-serif italic text-base block truncate">
                         {typedSignText || "Signature 1"}
@@ -1184,11 +1233,10 @@ function DetailedMouContent({
                     <button
                       type="button"
                       onClick={() => setSelectedFont("font-signature-2")}
-                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
-                        selectedFont === "font-signature-2"
+                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${selectedFont === "font-signature-2"
                           ? "border-[#5a2df5] bg-[#5a2df5]/10 text-[#5a2df5] ring-2 ring-[#5a2df5]/20"
                           : "border-neutral-200 hover:border-neutral-300 bg-white"
-                      }`}
+                        }`}
                     >
                       <span className="font-mono italic text-base block truncate">
                         {typedSignText || "Signature 2"}
@@ -1199,11 +1247,10 @@ function DetailedMouContent({
                     <button
                       type="button"
                       onClick={() => setSelectedFont("font-signature-3")}
-                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
-                        selectedFont === "font-signature-3"
+                      className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${selectedFont === "font-signature-3"
                           ? "border-[#5a2df5] bg-[#5a2df5]/10 text-[#5a2df5] ring-2 ring-[#5a2df5]/20"
                           : "border-neutral-200 hover:border-neutral-300 bg-white"
-                      }`}
+                        }`}
                     >
                       <span className="font-sans italic font-bold text-base block truncate">
                         {typedSignText || "Signature 3"}
@@ -1256,5 +1303,3 @@ export default function DetailedMou({
     </Suspense>
   );
 }
-
-
