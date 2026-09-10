@@ -61,3 +61,14 @@ html {
 .animate-pulse-subtle {
   animation: pulse-subtle 4s ease-in-out infinite;
 }
+
+@media print {
+  header,
+  footer,
+  nav,
+  body > header,
+  body > footer,
+  .no-print {
+    display: none !important;
+  }
+}

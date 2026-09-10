@@ -42,7 +42,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${isScrolled
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out print:hidden ${isScrolled
           ? "bg-white/85 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.06)] border-b border-purple-100/60 py-3"
           : "bg-white/95 backdrop-blur-sm border-b border-transparent py-4 sm:py-5"
         }`}

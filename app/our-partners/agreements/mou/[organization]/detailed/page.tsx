@@ -243,7 +243,11 @@ function DetailedMouContent({
               -webkit-print-color-adjust: exact !important;
               print-color-adjust: exact !important;
             }
-            .no-print {
+            .no-print,
+            body > header,
+            body > footer,
+            header,
+            footer {
               display: none !important;
             }
             .pdf-container {
