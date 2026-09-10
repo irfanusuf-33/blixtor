@@ -13,6 +13,7 @@ interface NavItem {
 const NAV_LINKS: NavItem[] = [
   { label: "Home", href: "/" },
   { label: "Services", href: "/services" },
+  { label: "Careers", href: "/careers" },
 ];
 
 export default function Navbar() {
