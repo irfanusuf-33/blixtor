@@ -237,6 +237,49 @@ export const partnershipModels = [
   },
 ];
 
+export const FAQ_DATA = [
+  {
+    question: "How much does it cost to list our courses with Blixtor?",
+    answer:
+      "Listing your courses on Blixtor is 100% free with zero upfront setup charges, onboarding fees, or monthly retainers. You only pay for verified, genuine student enquiries delivered to your admissions team on a transparent, performance-based pay-per-lead model.",
+  },
+  {
+    question: "How are prospective student enquiries delivered to our team?",
+    answer:
+      "Enquiries are delivered instantaneously in real time. We integrate directly with major education CRMs (including Salesforce, HubSpot, Zoho, JobReady, aXcelerate, and more) via direct API, secure webhooks, or encrypted email notifications so your admissions team can follow up immediately.",
+  },
+  {
+    question: "Are we locked into any long-term contracts or commitments?",
+    answer:
+      "No. There are zero lock-in contracts or mandatory commitments. You retain complete flexibility to adjust volume, pause campaigns, or scale your lead intake according to your upcoming cohort capacity and enrollment deadlines.",
+  },
+  {
+    question: "What types of courses and qualification levels can we list?",
+    answer:
+      "You can list all accredited and recognized qualification levels—including Certificate I through Certificate IV, Diplomas, Advanced Diplomas, Graduate Certificates, Bachelor/Master degrees, and accredited micro-credentials. We support 100% Online, Blended, and Campus + Workplace Placement delivery modes.",
+  },
+  {
+    question: "How quickly can our course listings go live and start generating leads?",
+    answer:
+      "Once your registration details and RTO/institution accreditation are verified (typically within 24 hours), our editorial team creates and optimizes your course landing pages. Your listings can be live and generating prospective student enquiries within 48 to 72 business hours.",
+  },
+  {
+    question: "How does Blixtor verify lead quality and prospective student intent?",
+    answer:
+      "Every enquiry undergoes automated verification (email deliverability, phone number validation, and duplicate prevention) combined with student qualification filters. Your team only receives reachable, high-intent prospective learners actively seeking course information.",
+  },
+  {
+    question: "Can we set volume caps on the number of leads we receive?",
+    answer:
+      "Yes. You have full control to configure custom weekly or monthly lead caps per course or discipline, ensuring lead delivery aligns precisely with your admissions bandwidth and upcoming intake limits.",
+  },
+  {
+    question: "What reporting and dedicated account management is included?",
+    answer:
+      "All partner providers receive a dedicated education account manager, real-time lead delivery logs, and periodic conversion performance reviews to help maximize enrolment outcomes.",
+  },
+];
+
 export default function ApplyForCourseListing() {
   const [formData, setFormData] = useState({
     providerName: "",
@@ -249,6 +292,11 @@ export default function ApplyForCourseListing() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex((prev) => (prev === index ? null : index));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -957,7 +1005,85 @@ export default function ApplyForCourseListing() {
       </section>
 
       {/* =========================================================================
-          SECTION 5: FOOTER CTA
+          SECTION 6: FREQUENTLY ASKED QUESTIONS (FAQ)
+      ========================================================================== */}
+      <section
+        id="faq"
+        className="py-16 sm:py-24 px-6 sm:px-10 lg:px-16 bg-white border-t border-purple-100/80"
+        aria-labelledby="faq-heading"
+      >
+        <div className="max-w-[960px] mx-auto">
+          <SectionHeading
+            className="mb-4"
+            headingClassName="text-[32px] sm:text-[38px] font-extrabold text-[#11111b]"
+            spanSizeClassName="w-[80px] sm:w-[110px]"
+          >
+            Frequently Asked Questions
+          </SectionHeading>
+
+          <p className="text-center text-neutral-600 text-base sm:text-lg max-w-[650px] mx-auto mb-12">
+            Everything you need to know about listing your courses, lead qualification,
+            CRM delivery, and performance pricing models.
+          </p>
+
+          <div className="space-y-4">
+            {FAQ_DATA.map((faq, index) => {
+              const isOpen = openFaqIndex === index;
+              return (
+                <div
+                  key={faq.question}
+                  className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                    isOpen
+                      ? "border-[#5a2df5]/50 bg-gradient-to-r from-purple-50/40 via-white to-purple-50/20 shadow-md shadow-[#5a2df5]/5"
+                      : "border-purple-100/90 bg-white hover:border-purple-300"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between gap-4 p-5 sm:p-6 text-left cursor-pointer transition-colors"
+                  >
+                    <span className="text-base sm:text-lg font-bold text-[#11111b] leading-snug">
+                      {faq.question}
+                    </span>
+                    <span
+                      className={`flex items-center justify-center w-8 h-8 rounded-full shrink-0 transition-all duration-300 ${
+                        isOpen
+                          ? "bg-[#5a2df5] text-white rotate-180"
+                          : "bg-purple-100/80 text-[#5a2df5]"
+                      }`}
+                    >
+                      <svg
+                        className="w-4 h-4 transition-transform duration-300"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isOpen ? "max-h-[300px] opacity-100 px-5 sm:px-6 pb-6" : "max-h-0 opacity-0 px-5 sm:px-6 py-0"
+                    }`}
+                  >
+                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed pt-2 border-t border-purple-100/70">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION 7: FOOTER CTA
       ========================================================================== */}
       <section
         style={{
