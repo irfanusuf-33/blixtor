@@ -24,8 +24,8 @@ const FOOTER_SECTIONS: FooterSection[] = [
         title: "Company",
         links: [
             { label: "About", href: "https://blixtor.com.au/about" },
-            { label: "Contact", href: "https://blixtor.com.au/contact" },
-            { label: "List Your Courses", href: "https://blixtor.com.au/list-your-courses" },
+            { label: "Contact", href: "/contact" },
+            { label: "List Your Courses", href: "/apply-for-course-listing" },
             { label: "Testimonials", href: "https://blixtor.com.au/testimonials" },
         ],
     },
