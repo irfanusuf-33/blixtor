@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  SectionHeading,
-  SiteFooter,
-} from "./_components/site-shell";
+import { SectionHeading } from "./_components/site-shell";
 
 const benefits = [
   ["/Group 2.svg", "Industry Specialists"],
@@ -299,8 +296,6 @@ export default function Home() {
           </Link>
         </div>
       </section>
-
-      <SiteFooter />
     </main>
   );
 }

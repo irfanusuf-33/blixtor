@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { SiteFooter } from "../_components/site-shell";
 
 type FormFeedback = {
   type: "success" | "error";
@@ -522,8 +521,6 @@ export default function ContactPage() {
           </div>
         </div>
       )}
-
-      <SiteFooter />
     </main>
   );
 }

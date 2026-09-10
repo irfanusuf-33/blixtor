@@ -1,9 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  SectionHeading,
-  SiteFooter,
-} from "../_components/site-shell";
+import { SectionHeading } from "../_components/site-shell";
 
 export default function ServicesPage() {
   return (
@@ -276,8 +273,6 @@ export default function ServicesPage() {
           </Link>
         </div>
       </section>
-
-      <SiteFooter />
     </main>
   );
 }
