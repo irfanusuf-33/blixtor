@@ -53,17 +53,79 @@ export default function Home() {
             </h1>
 
             {/* Subheading / Description */}
-            <p className="text-neutral-600 text-base sm:text-lg lg:text-[19px] font-normal leading-relaxed max-w-[620px] mb-8 sm:mb-10">
+            <p className="text-neutral-600 text-base sm:text-lg lg:text-[19px] font-normal leading-relaxed max-w-[620px] mb-6 sm:mb-8">
               Partner with Blixtor to increase your market presence, attract high-value
               customers, and unlock sustainable business growth through tailored
               sales and marketing strategies.
             </p>
 
+            {/* Search Bar */}
+            <form
+              action="/services"
+              method="GET"
+              className="w-full max-w-[620px] mb-5 p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-md border border-purple-200/80 shadow-lg shadow-purple-950/5 focus-within:border-[#5a2df5] focus-within:ring-4 focus-within:ring-[#5a2df5]/15 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 transition-all duration-300"
+            >
+              <div className="flex items-center flex-1 px-3 sm:pl-4">
+                <svg
+                  className="w-5 h-5 text-[#8e5eff] shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  name="q"
+                  placeholder="Search courses, services, industries..."
+                  className="w-full px-3 py-2 bg-transparent text-sm sm:text-base text-neutral-900 placeholder:text-neutral-400 focus:outline-none"
+                  aria-label="Search services or courses"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center gap-2 h-11 px-6 rounded-xl sm:rounded-full bg-[#5a2df5] hover:bg-[#481ecc] text-white text-sm sm:text-base font-semibold shadow-md shadow-[#5a2df5]/25 hover:shadow-lg hover:shadow-[#5a2df5]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 shrink-0"
+              >
+                <span>Search</span>
+                <Image
+                  src="/Arrow up-right.svg"
+                  alt=""
+                  width={15}
+                  height={15}
+                  aria-hidden="true"
+                  className="brightness-0 invert"
+                />
+              </button>
+            </form>
+
+            {/* Popular Search Suggestions */}
+            <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-500 mb-8 max-lg:justify-center">
+              <span className="font-semibold text-neutral-600">Popular:</span>
+              {["Marketing Strategy", "Sales Growth", "Qualifications", "Consulting"].map(
+                (term) => (
+                  <Link
+                    key={term}
+                    href={`/services?q=${encodeURIComponent(term)}`}
+                    className="px-2.5 py-1 rounded-full bg-white/70 hover:bg-white text-neutral-700 hover:text-[#5a2df5] border border-purple-100/90 shadow-2xs hover:border-[#5a2df5]/40 transition-colors"
+                  >
+                    {term}
+                  </Link>
+                )
+              )}
+            </div>
+
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 max-lg:justify-center">
               <Link
                 href="/contact"
-                className="group relative inline-flex items-center justify-center gap-2.5 h-12 sm:h-13 px-7 rounded-full bg-[#5a2df5] hover:bg-[#481ecc] text-white text-[15px] sm:text-base font-semibold tracking-wide shadow-lg shadow-[#5a2df5]/25 hover:shadow-xl hover:shadow-[#5a2df5]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+                className="group relative inline-flex items-center justify-center gap-2.5 h-12 px-7 rounded-full bg-[#5a2df5] hover:bg-[#481ecc] text-white text-[15px] sm:text-base font-semibold tracking-wide shadow-lg shadow-[#5a2df5]/25 hover:shadow-xl hover:shadow-[#5a2df5]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
               >
                 <span>Get a Free Consultation</span>
                 <Image
@@ -78,9 +140,9 @@ export default function Home() {
 
               <Link
                 href="/services"
-                className="group inline-flex items-center justify-center gap-2 h-12 sm:h-13 px-7 rounded-full bg-white/80 hover:bg-white text-neutral-800 hover:text-[#5a2df5] border border-purple-200/80 hover:border-[#5a2df5]/40 text-[15px] sm:text-base font-semibold backdrop-blur-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+                className="group inline-flex items-center justify-center gap-2 h-12 px-7 rounded-full bg-white/80 hover:bg-white text-neutral-800 hover:text-[#5a2df5] border border-purple-200/80 hover:border-[#5a2df5]/40 text-[15px] sm:text-base font-semibold backdrop-blur-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
               >
-                <span>Explore Services</span>
+                <span>Explore All Services</span>
               </Link>
             </div>
 
