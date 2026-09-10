@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   SectionHeading,
   SiteFooter,
-  SiteHeader,
 } from "./_components/site-shell";
 
 const benefits = [
@@ -16,8 +15,6 @@ const benefits = [
 export default function Home() {
   return (
     <main className="w-full overflow-hidden bg-white">
-      <SiteHeader active="home" />
-
       {/* ===== Hero ===== */}
       <section
         className={`relative isolate overflow-visible min-h-[620px] px-[30px] pb-[42px] grid grid-cols-[minmax(0,720px)_minmax(0,1fr)] items-center gap-[34px]

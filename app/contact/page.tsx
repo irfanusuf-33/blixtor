@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { SiteFooter, SiteHeader } from "../_components/site-shell";
+import { SiteFooter } from "../_components/site-shell";
 
 type FormFeedback = {
   type: "success" | "error";
@@ -80,8 +80,6 @@ export default function ContactPage() {
 
   return (
     <main className="min-h-screen w-full overflow-x-hidden bg-white">
-      <SiteHeader active="contact" />
-
       {/* =========================
           CONTACT SECTION
       ========================== */}

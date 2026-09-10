@@ -3,14 +3,11 @@ import Link from "next/link";
 import {
   SectionHeading,
   SiteFooter,
-  SiteHeader,
 } from "../_components/site-shell";
 
 export default function ServicesPage() {
   return (
     <main className="w-full overflow-hidden bg-white">
-      <SiteHeader active="services" />
-
       {/* ===== Hero ===== */}
       <section
         className={`relative overflow-hidden min-h-[620px] px-[30px] grid grid-cols-[minmax(0,652px)_minmax(0,1fr)] items-center gap-[34px]
