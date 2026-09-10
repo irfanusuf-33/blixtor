@@ -42,11 +42,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${
-        isScrolled
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${isScrolled
           ? "bg-white/85 backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.06)] border-b border-purple-100/60 py-3"
           : "bg-white/95 backdrop-blur-sm border-b border-transparent py-4 sm:py-5"
-      }`}
+        }`}
     >
       <div className="max-w-[1360px] mx-auto px-4 sm:px-8 flex items-center justify-between">
         {/* Brand Logo */}
@@ -77,11 +76,10 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`relative px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 ${
-                    active
+                  className={`relative px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 ${active
                       ? "text-black font-semibold bg-white shadow-sm"
                       : "text-neutral-600 hover:text-black hover:bg-white/50"
-                  }`}
+                    }`}
                 >
                   {link.label}
                   {active && (
@@ -92,21 +90,46 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* CTA Button */}
-          <Link
-            href="/contact"
-            className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-[#5627ed] hover:bg-[#481ecc] text-white text-[15px] font-semibold tracking-wide shadow-md shadow-[#5627ed]/20 transition-all duration-300 hover:shadow-lg hover:shadow-[#5627ed]/30 hover:-translate-y-0.5 active:translate-y-0"
-          >
-            <span>Contact Us</span>
-            <Image
-              src="/Arrow up-right.svg"
-              alt=""
-              width={16}
-              height={16}
-              aria-hidden="true"
-              className="brightness-0 invert transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
+          {/* Browse Courses & CTA Buttons */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/courses"
+              className="group relative inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[#5627ed] via-[#794dfc] to-[#5627ed] bg-[length:200%_100%] hover:bg-[100%_0] text-white text-[14px] sm:text-[15px] font-semibold tracking-wide shadow-md shadow-[#5627ed]/25 hover:shadow-lg hover:shadow-[#5627ed]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300 overflow-hidden"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+              </span>
+              <span>Browse Courses</span>
+              <svg
+                className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7 17L17 7M17 17V7H7" />
+              </svg>
+            </Link>
+
+            <Link
+              href="/contact"
+              className="group relative inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-full bg-neutral-900 hover:bg-black text-white text-[14px] sm:text-[15px] font-semibold tracking-wide shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0"
+            >
+              <span>Contact Us</span>
+              <Image
+                src="/Arrow up-right.svg"
+                alt=""
+                width={15}
+                height={15}
+                aria-hidden="true"
+                className="brightness-0 invert transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
+            </Link>
+          </div>
         </nav>
 
         {/* Mobile Hamburger Toggle Button */}
@@ -141,7 +164,7 @@ export default function Navbar() {
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
           mobileMenuOpen
-            ? "max-h-[320px] opacity-100 border-b border-purple-100/80 bg-white/95 backdrop-blur-lg shadow-xl"
+            ? "max-h-[420px] opacity-100 border-b border-purple-100/80 bg-white/95 backdrop-blur-lg shadow-xl"
             : "max-h-0 opacity-0 pointer-events-none"
         }`}
       >
@@ -167,8 +190,30 @@ export default function Navbar() {
           })}
 
           <Link
+            href="/courses"
+            className="flex items-center justify-center gap-2 mt-2 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#5627ed] via-[#794dfc] to-[#5627ed] text-white text-base font-semibold shadow-md shadow-[#5627ed]/20 transition-all duration-200"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+            </span>
+            <span>Browse Courses</span>
+            <svg
+              className="w-4 h-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M7 17L17 7M17 17V7H7" />
+            </svg>
+          </Link>
+
+          <Link
             href="/contact"
-            className="flex items-center justify-center gap-2 mt-2 w-full py-3.5 px-4 rounded-xl bg-[#5627ed] hover:bg-[#481ecc] text-white text-base font-semibold shadow-md shadow-[#5627ed]/20 transition-all duration-200"
+            className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-xl bg-neutral-900 hover:bg-black text-white text-base font-semibold shadow-sm transition-all duration-200"
           >
             <span>Contact Us</span>
             <Image
