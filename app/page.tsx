@@ -14,88 +14,115 @@ export default function Home() {
     <main className="w-full overflow-hidden bg-white">
       {/* ===== Hero ===== */}
       <section
-        className={`relative isolate overflow-visible min-h-[620px] px-[30px] pb-[42px] grid grid-cols-[minmax(0,720px)_minmax(0,1fr)] items-center gap-[34px]
-          bg-[linear-gradient(106deg,#e9e3ff_0%,#e7ddff_60%,#e6dcff_100%)]
-          max-[850px]:grid-cols-1 max-[850px]:gap-5 max-[850px]:px-[30px] max-[850px]:py-[60px] max-[850px]:pb-[54px]
-          max-[650px]:min-h-0 max-[650px]:px-[18px] max-[650px]:py-[56px] max-[650px]:pb-[44px]`}
+        className="relative isolate overflow-hidden bg-[radial-gradient(ellipse_80%_80%_at_50%_-10%,#ebe3ff_0%,#f6f2ff_45%,#ffffff_100%)] pt-10 pb-16 sm:pt-14 sm:pb-24 px-6 sm:px-10 lg:px-16"
         aria-labelledby="hero-title"
       >
-        {/* Glow layer — sized and positioned to bleed past the section's bottom edge */}
+        {/* Ambient background glow decoration */}
         <div
-          className="pointer-events-none absolute left-[40%] right-[-10%] top-[45%] bottom-[-80px] -z-10 rounded-[50%]
-            bg-[radial-gradient(ellipse_at_center,#c9a8f5_0%,#d4bafa_35%,transparent_72%)]"
+          className="pointer-events-none absolute -top-32 -right-32 w-[550px] h-[550px] rounded-full bg-[radial-gradient(circle,rgba(168,135,255,0.22)_0%,rgba(90,45,245,0)_70%)] blur-3xl -z-10 animate-pulse-subtle"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute bottom-0 left-[-10%] w-[450px] h-[450px] rounded-full bg-[radial-gradient(circle,rgba(215,198,255,0.3)_0%,rgba(240,230,255,0)_70%)] blur-2xl -z-10"
           aria-hidden="true"
         />
 
-        <div className="relative z-[1] w-full max-[850px]:text-center">
-          <p
-            className={`w-full max-w-[820px] mb-[24px] text-[#5b2df2] [font-family:var(--font-poppins),Arial,sans-serif] text-[45px] font-light italic leading-[1.5]
-              max-[850px]:mx-auto
-              max-[650px]:text-[clamp(30px,9vw,45px)]`}
-            id="hero-title"
-          >
-            <span className="block">
-              <em className="italic text-[#5a2df5] [font:inherit]">
-                Empowering{" "}
-              </em>
-              <strong className="text-black [font-family:var(--font-poppins),Arial,sans-serif] [font-size:inherit] font-semibold not-italic">
-                Businesses
-              </strong>
-            </span>
-            <span className="block">
-              <strong className="text-black [font-family:var(--font-poppins),Arial,sans-serif] [font-size:inherit] font-semibold not-italic">
-                to{" "}
-              </strong>
-              <em className="italic font-semibold text-[#5a2df5]">
-                Grow, Scale &amp;
-              </em>
-            </span>
-            <em className="italic font-semibold text-[#5a2df5]">Succeed</em>
-          </p>
+        <div className="max-w-[1360px] mx-auto grid grid-cols-1 lg:grid-cols-12 items-center gap-12 lg:gap-8">
+          {/* Left Column: Typography & CTAs */}
+          <div className="lg:col-span-7 flex flex-col items-start max-lg:items-center max-lg:text-center">
+            {/* Pill Badge */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-purple-200/80 shadow-xs mb-6 transition-all duration-300 hover:border-purple-300 hover:bg-white">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5a2df5] opacity-75" />
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#5a2df5]" />
+              </span>
+              <span className="text-xs sm:text-sm font-semibold tracking-wide text-[#5a2df5]">
+                Strategic Business Growth & Advisory
+              </span>
+            </div>
 
-          <p
-            className={`w-full max-w-[820px] m-0 text-black [font-family:var(--font-poppins),Arial,sans-serif] text-[18px] font-medium leading-[1.6]
-              max-[850px]:mx-auto
-              max-[650px]:text-[16px] max-[650px]:leading-[1.55]`}
-          >
-            Partner with Blixtor to increase your market presence, attract more
-            customers, and unlock sustainable business growth through tailored
-            sales and marketing strategies.
-          </p>
+            {/* Consistent & Impactful Heading */}
+            <h1
+              id="hero-title"
+              className="text-3xl sm:text-5xl lg:text-[54px] xl:text-[60px] font-extrabold tracking-tight text-[#11111b] leading-[1.12] mb-6 max-w-[700px]"
+            >
+              Empowering Businesses to{" "}
+              <span className="bg-[linear-gradient(135deg,#5a2df5_0%,#8e5eff_50%,#5a2df5_100%)] bg-clip-text text-transparent italic">
+                Grow, Scale &amp; Succeed
+              </span>
+            </h1>
 
-          <div className="flex flex-wrap gap-4 mt-8 max-[850px]:justify-center max-[650px]:gap-[10px] max-[650px]:mt-[25px]">
-            <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
-                hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
-                bg-[#5a2df5] text-white
-                max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
-              href="/contact"
-            >
-              Get a free Consultation
-            </Link>
-            <Link
-              className={`inline-flex items-center justify-center gap-[10px] h-[52px] rounded-[14px] [font-family:var(--font-poppins),Arial,sans-serif]
-                text-[20px] px-[16px] font-normal transition-[transform,box-shadow] duration-200
-                hover:-translate-y-[2px] hover:shadow-[0_5px_12px_#3a1bb838]
-                border border-[#5a2df5] text-[#5a2df5] bg-transparent
-                max-[650px]:h-[42px] max-[650px]:px-[12px] max-[650px]:text-[13px]`}
-              href="/services"
-            >
-              Explore Services
-            </Link>
+            {/* Subheading / Description */}
+            <p className="text-neutral-600 text-base sm:text-lg lg:text-[19px] font-normal leading-relaxed max-w-[620px] mb-8 sm:mb-10">
+              Partner with Blixtor to increase your market presence, attract high-value
+              customers, and unlock sustainable business growth through tailored
+              sales and marketing strategies.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-4 max-lg:justify-center">
+              <Link
+                href="/contact"
+                className="group relative inline-flex items-center justify-center gap-2.5 h-12 sm:h-13 px-7 rounded-full bg-[#5a2df5] hover:bg-[#481ecc] text-white text-[15px] sm:text-base font-semibold tracking-wide shadow-lg shadow-[#5a2df5]/25 hover:shadow-xl hover:shadow-[#5a2df5]/35 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+              >
+                <span>Get a Free Consultation</span>
+                <Image
+                  src="/Arrow up-right.svg"
+                  alt=""
+                  width={16}
+                  height={16}
+                  aria-hidden="true"
+                  className="brightness-0 invert transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
+              </Link>
+
+              <Link
+                href="/services"
+                className="group inline-flex items-center justify-center gap-2 h-12 sm:h-13 px-7 rounded-full bg-white/80 hover:bg-white text-neutral-800 hover:text-[#5a2df5] border border-purple-200/80 hover:border-[#5a2df5]/40 text-[15px] sm:text-base font-semibold backdrop-blur-sm shadow-xs hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+              >
+                <span>Explore Services</span>
+              </Link>
+            </div>
+
+            {/* Key Value Metrics / Trust Badges */}
+            <div className="pt-8 sm:pt-10 flex flex-wrap items-center gap-6 text-xs sm:text-sm text-neutral-500 max-lg:justify-center">
+              <div className="flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#5a2df5]/10 text-[#5a2df5] font-bold text-xs">
+                  ✓
+                </span>
+                <span>Tailored Growth Plans</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#5a2df5]/10 text-[#5a2df5] font-bold text-xs">
+                  ✓
+                </span>
+                <span>End-to-End Support</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#5a2df5]/10 text-[#5a2df5] font-bold text-xs">
+                  ✓
+                </span>
+                <span>Proven Results</span>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <div className="relative z-[1] w-full max-w-[607px] justify-self-end max-[850px]:justify-self-center max-[850px]:max-w-[420px] max-[650px]:max-w-[320px]">
-          <Image
-            className="w-full h-auto block"
-            src="/magnific_remove-the-background_iA4QWQ23uK 1.svg"
-            alt="Business growth, strategy, and partnership illustration"
-            width={607}
-            height={514}
-            priority
-          />
+          {/* Right Column: Hero Visual Illustration with Smooth Float Animation */}
+          <div className="lg:col-span-5 flex justify-center lg:justify-end">
+            <div className="relative w-full max-w-[480px] lg:max-w-none group">
+              <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_center,rgba(168,135,255,0.3)_0%,transparent_70%)] blur-xl opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative animate-float">
+                <Image
+                  className="w-full h-auto drop-shadow-xl transition-transform duration-500 hover:scale-[1.02]"
+                  src="/magnific_remove-the-background_iA4QWQ23uK 1.svg"
+                  alt="Strategic business growth, marketing and consulting illustration"
+                  width={607}
+                  height={514}
+                  priority
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
